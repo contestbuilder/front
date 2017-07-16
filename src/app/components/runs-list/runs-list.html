@@ -1,0 +1,12 @@
+<div class="runs-list">
+	<div class="row" ng-repeat="run in vm.solutionRuns">
+		<div class="col-12">
+			<p>
+				<a
+					ng-href="{{ vm.getLink(run.run_number) }}"
+				>Execução {{ run.run_number }}</a>
+				- {{ run.timestamp | myDate }}
+			</p>
+		</div>
+	</div>
+</div>

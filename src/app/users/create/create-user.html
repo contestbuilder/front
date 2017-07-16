@@ -1,0 +1,72 @@
+<navbar></navbar>
+
+<breadcrumbs
+	users="true"
+	new="'o usuário'"
+></breadcrumbs>
+
+<div id="create-user" class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="page-title">Cadastrar novo usuário</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<form novalidate name="userForm2" ng-submit="vm.submit();" autocomplete="off">
+				<div class="form-group">
+					<label for="user-username">Nome de usuário</label>
+					<input 
+						type="text" 
+						name="new-user-username" 
+						ng-model="vm.form.username"
+						class="form-control"
+						id="user-username"
+						placeholder="programming_rocks_18" 
+						ng-required="true" 
+					>
+				</div>
+
+				<div class="form-group">
+					<label for="user-email">E-mail</label>
+					<input 
+						type="email" 
+						name="new-user-email" 
+						ng-model="vm.form.email"
+						class="form-control"
+						id="user-email"
+						placeholder="cool_address@gmail.com" 
+						ng-required="true" 
+						autocomplete="off"
+					>
+				</div>
+
+				<div class="form-group">
+					<label for="user-password">Senha</label>
+					<input 
+						type="password" 
+						name="new-user-password" 
+						ng-model="vm.form.password"
+						class="form-control"
+						id="user-password"
+						placeholder="******" 
+						ng-required="true" 
+					>
+				</div>
+
+				<a
+					role="button" 
+					class="btn btn-secondary"
+					ng-href="{{ 'user.list' | url }}"
+				>Cancelar</a>
+
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="userForm.$invalid"
+				>Salvar</button>
+			</form>
+		</div>
+	</div>
+</div>

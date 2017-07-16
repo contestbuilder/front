@@ -1,0 +1,23 @@
+
+.generic-list {
+	padding-bottom: 16px;
+
+	.header-row {
+		.header-col {
+			padding-top:    10px;
+			padding-bottom: 10px;
+
+			font-weight: bold;
+
+			border-top:    1px solid #eceeef;
+			border-bottom: 2px solid #eceeef;
+		}
+	}
+
+	.item {
+		padding-top:    6px;
+		padding-bottom: 6px;
+
+		border-top: 1px solid #eceeef;
+	}
+}

@@ -1,0 +1,17 @@
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<nav class="breadcrumb">
+				<a
+					ng-repeat="item in vm.items"
+					class="breadcrumb-item"
+					ng-href="{{ item.url }}"
+				>{{ item.label }}</a>
+
+				<span
+					class="breadcrumb-item active"
+				>{{ vm.activeItem.label }}</span>
+			</nav>
+		</div>
+	</div>
+</div>

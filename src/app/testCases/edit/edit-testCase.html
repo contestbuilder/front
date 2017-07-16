@@ -1,0 +1,68 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+	problem="vm.problem"
+	test-case="vm.testCase"
+	edit="true"
+></breadcrumbs>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="page-title">Editar caso de teste</h1>
+		</div>
+	</div>
+
+	<form novalidate name="testCaseForm" ng-submit="vm.submit(vm.form);">
+		<div class="row">
+			<div class="col-6">
+				<div class="form-group">
+					<textarea 
+						type="text" 
+						name="input" 
+						ng-model="vm.form.input"
+						class="form-control"
+						id="test-case-input"
+						placeholder="Entrada" 
+						ng-required="true" 
+						ng-trim="false"
+						rows="6"
+					></textarea>
+				</div>
+			</div>
+
+			<div class="col-6">
+				<div class="form-group">
+					<textarea
+						type="text" 
+						name="output" 
+						ng-model="vm.form.output"
+						class="form-control"
+						id="test-case-output"
+						placeholder="Saída" 
+						ng-required="true" 
+						ng-trim="false"
+						rows="6"
+					></textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<a
+					role="button"
+					class="btn btn-secondary"
+					ng-href="{{ 'contest.problem.testCase.view' | url : vm.contest.nickname : vm.problem.nickname : vm.testCase._id }}"
+				>Cancelar</a>
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="testCaseForm.$invalid"
+				>Salvar</button>
+			</div>
+		</div>
+	</form>
+</div>

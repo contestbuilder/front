@@ -1,0 +1,24 @@
+<div class="generic-list">
+	<div ng-if="list.items.length" class="row header-row">
+		<div
+			ng-repeat="header in list.headers"
+			class="header-col"
+			ng-class="header.class"
+		>
+			{{ header.label }}
+		</div>
+	</div>
+
+	<div
+		ng-repeat="item in list.items"
+		ng-transclude="parent"
+		class="item"
+	>
+	</div>
+
+	<div ng-if="!list.items.length" class="row">
+		<div class="col-12">
+			<p>{{ list.noItemsMessage }}</p>
+		</div>
+	</div>
+</div>

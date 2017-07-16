@@ -1,0 +1,58 @@
+<div class="row">
+	<div class="col-12">
+		<table class="table table-sm">
+			<thead>
+				<tr>
+					<th></th>
+					<th ng-repeat="test_case in vm.testCases">#{{ test_case.current.order }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="solution in vm.solutions">
+					<td>{{ solution.name }}</td>
+					<td ng-repeat="test_case in vm.testCases">
+						<span
+							ng-if="vm.getSolutionTestCaseRun(vm.solutionRuns, solution._id, test_case._id)"
+							ng-click="vm.selectRun(vm.solutionRuns, solution._id, test_case._id)"
+						>
+							{{ vm.getSolutionTestCaseRun(vm.solutionRuns, solution._id, test_case._id).verdict.short }}
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="row" ng-if="vm.selectedRun">
+	<div class="col-12">
+		<p>
+			<span>
+				<strong>{{ vm.selectedRun.solution.name }} / #{{ vm.selectedRun.test_case.current.order }}</strong>
+			</span>
+			<span style="float: right;">
+				<i 
+					class="fa fa-times" 
+					aria-hidden="true"
+					ng-click="vm.unselectRun()"
+				></i>
+			</span>
+		</p>
+		<p><strong>Veredito:</strong> {{ vm.selectedRun.verdict.label }}</p>
+	</div>
+
+	<div class="col-6">
+		<p><strong>Saída esperada:</strong></p>
+		<pre>{{ vm.selectedRun.test_case.current.output }}</pre>
+	</div>
+	
+	<div class="col-6">
+		<p><strong>Saída:</strong></p>
+		<pre>{{ vm.selectedRun.output }}</pre>
+	</div>
+</div>
+<div class="row" ng-if="!vm.selectedRun">
+	<div class="col-12">
+		<p>Selecione um item da tabela para ver mais detalhes.</p>
+	</div>
+</div>

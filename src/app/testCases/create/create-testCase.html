@@ -1,0 +1,93 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+	problem="vm.problem"
+	new="'o caso de teste'"
+></breadcrumbs>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="page-title">Cadastrar novo caso de teste</h1>
+		</div>
+	</div>
+
+	<form novalidate name="testCaseForm" ng-submit="vm.submit(vm.form);">
+		<!-- for every test case -->
+		<div class="row" ng-repeat="testCaseNumber in vm.form.test_cases">
+			<div class="col-12">
+				<p>
+					#{{ vm.problem.test_cases.length + 1 + $index }} caso de teste
+					<i 
+						class="fa fa-trash-o" 
+						aria-hidden="true"
+						uib-tooltip="Remover caso de teste"
+						ng-if="vm.form.test_cases.length > 1"
+						ng-click="vm.removeTestCase($index)"
+					></i>
+				</p>
+			</div>
+
+			<!-- input -->
+			<div class="col-6">
+				<div class="form-group">
+					<textarea 
+						type="text" 
+						name="input" 
+						ng-model="testCaseNumber.input"
+						class="form-control"
+						id="test-case-input"
+						placeholder="Entrada" 
+						ng-required="true" 
+						ng-trim="false"
+						rows="6"
+					></textarea>
+				</div>
+			</div>
+
+			<!-- output -->
+			<div class="col-6">
+				<div class="form-group">
+					<textarea
+						type="text" 
+						name="output" 
+						ng-model="testCaseNumber.output"
+						class="form-control"
+						id="test-case-output"
+						placeholder="Saída" 
+						ng-required="true" 
+						ng-trim="false"
+						rows="6"
+					></textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="row" style="margin-bottom: 16px;">
+			<div class="col-12">
+				<button
+					type="button"
+					class="btn btn-secondary"
+					ng-click="vm.addTestCase()"
+				>+</button>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<a
+					role="button"
+					class="btn btn-secondary"
+					ng-href="{{ 'contest.problem.view' | url : vm.contest.nickname : vm.problem.nickname }}"
+				>Cancelar</a>
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="testCaseForm.$invalid"
+				>Salvar</button>
+			</div>
+		</div>
+	</form>
+</div>

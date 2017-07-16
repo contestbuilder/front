@@ -1,0 +1,47 @@
+<navbar></navbar>
+
+<breadcrumbs
+	users="true"
+></breadcrumbs>
+
+<div id="view-all-users" class="container">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="page-title">Lista de usuários</h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="container user-list">
+		<generic-list
+			items="vm.usersList"
+			no-items-message="'Nenhum usuário cadastrado.'"
+			headers="[
+				{ label: 'Nome', class: 'col-12' }
+			]"
+			parent="vm"
+		>
+			<div class="row">
+				<div class="col-12">
+					<a 
+						ng-href="{{ 'user.view' | url : item.username }}"
+					>
+						{{ item.username }}
+					</a>
+					<span ng-if="item.deleted_at">(Desativado em {{ item.deleted_at | date:'dd/MM/yyyy' }})</span>
+				</div>
+			</div>
+		</generic-list>
+
+		<div class="row">
+			<div class="col-12">
+				<a
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'user.new' | url }}"
+				>Criar usuário</a>
+			</div>
+		</div>
+	</div>
+</div>

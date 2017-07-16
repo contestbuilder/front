@@ -1,0 +1,31 @@
+<navbar></navbar>
+
+<breadcrumbs
+	users="true"
+	user="vm.user"
+></breadcrumbs>
+
+<alert-inactive
+	ng-if="vm.user.deleted_at"
+	msg="'Esta conta de usuário está inativa.'"
+></alert-inactive>
+
+<div id="view-user" class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="page-title">{{ vm.user.username }}</h1>
+		</div>
+	</div>
+
+	<div class="row" ng-if="!vm.user.deleted_at && vm.me.permissions && vm.me.permissions.delete_user">
+		<div class="col-12">
+			<button
+				class="btn btn-danger float-right"
+				type="button"
+				modal-confirm="vm.deleteUser()"
+				modal-confirm-title="'Desativar usuário'"
+				modal-confirm-body="'Tem certeza que deseja desativar este usuário?'"
+			>Desativar usuário</button>
+		</div>
+	</div>
+</div>

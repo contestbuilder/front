@@ -1,0 +1,150 @@
+<navbar></navbar>
+
+<alert-inactive
+	ng-if="vm.contest.deleted_at"
+	msg="'Este contest está inativo.'"
+></alert-inactive>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+></breadcrumbs>
+
+<div id="view-contest">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="page-title">{{ vm.contest.name }}</h1>
+			</div>
+		</div>
+
+		<!-- info -->
+		<div class="row">
+			<div class="col-12">
+				<p>
+					Autor: 
+					<a 
+						ng-href="{{ 'user.view' | url : vm.contest.author.username }}"
+					>{{ vm.contest.author.username }}</a>
+				</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<p>Criado em: <span>{{ vm.contest.created_at | date:'dd/MM/yyyy' }}</span></p>
+			</div>
+		</div>
+	</div>
+
+	<!-- contributors list -->
+	<div class="container contributors-list">
+		<div class="row">
+			<div class="col-12">
+				<h4>Contribuidores:</h4>
+			</div>
+		</div>
+
+		<generic-list
+			items="vm.contest.contributors"
+			no-items-message="'Nenhum contribuidor cadastrado.'"
+			headers="[
+				{ label: 'Nome',  class: 'col-8' },
+				{ label: 'Ações', class: 'col-4' }
+			]"
+			parent="vm"
+		>
+			<div class="row">
+				<div class="col-8">
+					<a 
+						ng-href="{{ 'user.view' | url : item.username }}"
+					>{{ item.username }}</a>
+				</div>
+				<div class="col-4" ng-if="list.parent.canI('delete_contributor')">
+					<button
+						class="btn btn-danger"
+						type="button"
+						modal-confirm="list.parent.deleteContributor(item)"
+						modal-confirm-title="'Remover contribuidor'"
+						modal-confirm-body="'Tem certeza que deseja remover este contribuidor?'"
+					>
+						<i class="fa fa-trash" aria-hidden="true"></i>
+					</button>
+				</div>
+			</div>
+		</generic-list>
+
+		<div class="row" ng-if="!vm.contest.deleted_at">
+			<div class="col-12">
+				<a
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.contributor.new' | url : vm.contest.nickname }}"
+				>Adicionar contribuidor</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- problems list -->
+	<div class="container problems-list">
+		<div class="row">
+			<div class="col-12">
+				<h4>Problemas:</h4>
+			</div>
+		</div>
+
+		<generic-list
+			items="vm.contest.problems"
+			no-items-message="'Nenhum problema cadastrado.'"
+			headers="[
+				{ label: 'Nome',  class: 'col-8' },
+				{ label: 'Ações', class: 'col-4' }
+			]"
+			parent="vm"
+		>
+			<div class="row">
+				<div class="col-8">
+					<a 
+						ng-href="{{ 'contest.problem.view' | url : list.parent.contest.nickname : item.nickname }}"
+					>{{ item.name }}</a>
+				</div>
+				<div class="col-4" ng-if="list.parent.canI('delete_problem')">
+					<button
+						class="btn btn-danger"
+						type="button"
+						modal-confirm="list.parent.deleteProblem(item)"
+						modal-confirm-title="'Remover problema'"
+						modal-confirm-body="'Tem certeza que deseja remover este problema?'"
+					>
+						<i class="fa fa-trash" aria-hidden="true"></i>
+					</button>
+				</div>
+			</div>
+		</generic-list>
+
+		<div class="row" ng-if="!vm.contest.deleted_at">
+			<div class="col-12">
+				<a
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.problem.new' | url : vm.contest.nickname }}"
+				>Adicionar problema</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- actions -->
+	<div class="container action-list">
+		<div class="row" ng-if="!vm.contest.deleted_at && vm.me.permissions && vm.me.permissions.delete_contest">
+			<div class="col-12">
+				<button
+					class="btn btn-danger float-right"
+					type="button"
+					modal-confirm="vm.deleteContest(problem)"
+					modal-confirm-title="'Desativer contest'"
+					modal-confirm-body="'Tem certeza que deseja desativar este contest?'"
+				>Desativar contest</button>
+			</div>
+		</div>
+	</div>
+</div>

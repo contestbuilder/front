@@ -1,0 +1,54 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+></breadcrumbs>
+
+<div id="view-all-contests">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="page-title">Lista de contests</h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="container contest-list">
+		<generic-list
+			items="vm.contestList"
+			no-items-message="'Nenhum contest cadastrado.'"
+			headers="[
+				{ label: 'Nome',      class: 'col-4' },
+				{ label: 'Autor',     class: 'col-4' },
+				{ label: 'Criado em', class: 'col-4' }
+			]"
+			parent="vm"
+		>
+			<div class="row">
+				<div class="col-4">
+					<a
+						ng-href="{{ 'contest.view' | url : item.nickname }}"
+					>{{ item.name }}</a>
+				</div>
+				<div class="col-4">
+					<a
+						ng-href="{{ 'user.view' | url : item.author.username }}"
+					>{{ item.author.username }}</a>
+				</div>
+				<div class="col-4">
+					<p>{{ item.created_at | date:'dd/MM/yyyy' }}</p>
+				</div>
+			</div>
+		</generic-list>
+
+		<div class="row">
+			<div class="col-12">
+				<a
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.new' | url }}"
+				>Criar contest</a>
+			</div>
+		</div>
+	</div>
+</div>

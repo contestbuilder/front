@@ -1,0 +1,50 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	new="'o contest'"
+></breadcrumbs>
+
+<div id="create-contest" class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="page-title">Criar contest</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12 col-lg-6">
+			<form novalidate name="contestForm" ng-submit="vm.submit();">
+				<div class="form-group">
+					<label for="contest-name">Nome</label>
+					<input 
+						type="text" 
+						name="name" 
+						ng-model="vm.form.name"
+						class="form-control"
+						id="contest-name"
+						placeholder="Super Contest 2017" 
+						ng-required="true" 
+					>
+				</div>
+
+				<div class="form-group">
+					<label class="form-label-static" for="contest-name">Autor</label>
+					<p>{{ vm.me.username }}</p>
+				</div>
+
+				<a
+					role="button" 
+					class="btn btn-secondary"
+					href="{{ 'contest.list' | url }}"
+				>Cancelar</a>
+
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="contestForm.$invalid"
+				>Salvar</button>
+			</form>
+		</div>
+	</div>
+</div>

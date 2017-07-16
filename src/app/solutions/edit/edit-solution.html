@@ -1,0 +1,70 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+	problem="vm.problem"
+	solution="vm.solution"
+	edit="true"
+></breadcrumbs>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="page-title">Editar solução</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<form novalidate name="solutionForm" ng-submit="vm.submit(vm.form);">
+				<div class="form-group">
+					<input 
+						type="text" 
+						name="name" 
+						ng-model="vm.form.name"
+						class="form-control"
+						id="solution-name"
+						placeholder="Nome" 
+						ng-required="true" 
+					>
+				</div>
+
+				<div class="form-group">
+					<textarea
+						name="source_code" 
+						ng-model="vm.form.source_code"
+						class="form-control"
+						id="solution-source_code"
+						placeholder="Código fonte" 
+						ng-required="true" 
+						rows="10"
+					></textarea>
+				</div>
+
+				<div class="form-group">
+					<select
+						name="language"
+						ng-model="vm.form.language"
+						class="custom-select"
+						id="solution-language"
+						ng-options="l.value as l.label for l in vm.languages"
+						ng-required="true"
+					>
+					</select>
+				</div>
+
+				<a
+					role="button"
+					class="btn btn-secondary"
+					ng-href="{{ 'contest.problem.solution.view' | url : vm.contest.nickname : vm.problem.nickname : vm.solution.nickname }}"
+				>Cancelar</a>
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="solutionForm.$invalid"
+				>Salvar</button>
+			</form>
+		</div>
+	</div>
+</div>

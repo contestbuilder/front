@@ -1,0 +1,50 @@
+<navbar></navbar>
+
+<alert-inactive
+	ng-if="vm.errorMessage"
+	msg="vm.errorMessage"
+></alert-inactive>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12 offset-md-3 col-md-6">
+			<h1 class="page-title">Login</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12 offset-md-3 col-md-6">
+			<form novalidate name="loginForm" ng-submit="vm.submit();">
+				<div class="form-group">
+					<input 
+						type="text" 
+						name="username" 
+						ng-model="vm.form.username"
+						class="form-control"
+						id="login-username"
+						placeholder="Nome de usuário" 
+						ng-required="true" 
+					>
+				</div>
+
+				<div class="form-group">
+					<input 
+						type="password" 
+						name="password" 
+						ng-model="vm.form.password"
+						class="form-control"
+						id="login-password"
+						placeholder="Senha" 
+						ng-required="true" 
+					>
+				</div>
+
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="loginForm.$invalid"
+				>Login</button>
+			</form>
+		</div>
+	</div>
+</div>

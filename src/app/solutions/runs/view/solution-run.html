@@ -1,0 +1,31 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+	problem="vm.problem"
+	solution="vm.solution"
+	extra="[{
+		label: 'Execuções',
+		url:   vm.urlFilter('contest.problem.solution.run.list', vm.contest.nickname, vm.problem.nickname, vm.solution.nickname)
+	}, {
+		label: 'Execução ' + vm.runNumber
+	}]"
+></breadcrumbs>
+
+<div id="solution-runs">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h2 class="page-title">{{ vm.solution.name }} - Execução {{ vm.runNumber }}</h2>
+			</div>
+		</div>
+
+		<run-result-table
+			problem="vm.problem"
+			solutions="vm.solutionsToShow"
+			test-cases="vm.problem.test_cases"
+			run-number="vm.runNumber"
+		></run-result-table>
+	</div>
+</div>

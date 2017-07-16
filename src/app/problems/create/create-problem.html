@@ -1,0 +1,68 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+	new="'o problema'"
+></breadcrumbs>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="page-title">Cadastrar novo problema</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12">
+			<form novalidate name="problemForm" ng-submit="vm.submit(vm.form);">
+				<div class="form-group">
+					<input 
+						type="text" 
+						name="name" 
+						ng-model="vm.form.name"
+						class="form-control"
+						id="problem-name"
+						placeholder="Nome" 
+						ng-required="true" 
+					>
+				</div>
+
+				<div class="form-group">
+					<textarea 
+						type="text" 
+						name="description" 
+						ng-model="vm.form.description"
+						class="form-control"
+						id="problem-description"
+						placeholder="Descrição"
+						ng-required="true"
+					></textarea>
+				</div>
+
+				<div class="form-group">
+					<input
+						type="number"
+						name="time_limit"
+						ng-model="vm.form.time_limit"
+						class="form-control"
+						id="problem-time_limit"
+						placeholder="1"
+						ng-required="false"
+					>
+				</div>
+
+				<a
+					role="button"
+					class="btn btn-secondary"
+					ng-href="{{ 'contest.view' | url : vm.contest_nickname }}"
+				>Cancelar</a>
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="problemForm.$invalid"
+				>Salvar</button>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+<navbar></navbar>
+
+<div id="view-all-logs">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h1 class="page-title">Histórico</h1>
+			</div>
+		</div>
+	</div>
+
+	<div class="container log-list">
+		<generic-list
+			items="vm.logsList"
+			no-items-message="'Nenhum log registrado.'"
+			headers="[
+				{ label: 'Contest',  class: 'col-2' },
+				{ label: 'Autor',    class: 'col-2' },
+				{ label: 'Mensagem', class: 'col-6' },
+				{ label: 'Data',     class: 'col-2' }
+			]"
+			parent="vm"
+		>
+			<div class="row">
+				<div class="col-2">
+					<a
+						ng-href="{{ 'contest.view' | url : item.contest.nickname }}"
+					>{{ item.contest.name }}</a>
+				</div>
+				<div class="col-2">
+					<a
+						ng-href="{{ 'user.view' | url : item.author.username }}"
+					>{{ item.author.username }}</a>
+				</div>
+				<div class="col-6">
+					<p>{{ item.message }}</p>
+				</div>
+				<div class="col-2">
+					<p>{{ item.date | date:'dd/MM/yyyy' }}</p>
+				</div>
+			</div>
+		</generic-list>
+	</div>
+</div>

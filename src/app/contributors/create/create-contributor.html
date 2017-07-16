@@ -1,0 +1,39 @@
+<navbar></navbar>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12">
+			<h1 class="page-title">Adicionar novo contribuidor</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12" ng-if="vm.loading">
+			<p>Carregando.</p>
+		</div>
+		<div class="col-12" ng-if="!vm.loading && !vm.usersList.length">
+			<p>Não há mais quem adicionar.</p>
+		</div>
+		<div class="col-12 col-lg-6" ng-if="!vm.loading && !!vm.usersList.length">
+			<form novalidate name="userForm" ng-submit="vm.submit();">
+				<div class="form-group">
+					<select 
+						name="user" 
+						ng-model="vm.form.user"
+						ng-options="user as user.username for user in vm.usersList"
+						class="form-control"
+						id="contributor-user"
+						placeholder="Nome de usuário" 
+						ng-required="true" 
+					></select>
+				</div>
+
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="userForm.$invalid"
+				>Salvar</button>
+			</form>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,44 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+	problem="vm.problem"
+	test-case="vm.test_case"
+></breadcrumbs>
+
+<div id="view-test-case">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h2 class="page-title">#{{ vm.test_case.current.order }} caso de teste</h2>
+			</div>
+		</div>
+
+		<!-- info -->
+		<div class="row">
+			<div class="col-6">
+				<p>Entrada:</p>
+				<pre>{{ vm.test_case.current.input }}</pre>
+			</div>
+
+			<div class="col-6">
+				<p>Saída:</p>
+				<pre>{{ vm.test_case.current.output }}</pre>
+			</div>
+		</div>
+	</div>
+
+	<!-- actions -->
+	<div class="container action-list">
+		<div class="row">
+			<div class="col-12">
+				<a
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.problem.testCase.edit' | url : vm.contest.nickname : vm.problem.nickname : vm.test_case._id }}"
+				>Editar caso de teste</a>
+			</div>
+		</div>
+	</div>
+</div>
