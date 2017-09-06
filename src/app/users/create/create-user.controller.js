@@ -15,8 +15,7 @@ function CreateUserController(userService) {
     vm.submit = function() {
         userService.createUser({
             username: vm.form.username,
-            email:    vm.form.email,
-            password: vm.form.password
+            email:    vm.form.email
         }).then(function(user) {
             console.log(user);
         });

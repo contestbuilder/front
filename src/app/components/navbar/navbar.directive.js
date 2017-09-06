@@ -23,6 +23,8 @@ function navbar() {
         var vm = this;
 
         vm.init = function() {
+            vm.menuCollapsed = true;
+
             vm.isLogged = authService.isLogged();
 
             vm.mainLinks = getMainLinks();
@@ -53,6 +55,11 @@ function navbar() {
         vm.logout = function() {
             authService.logout();
             $location.path('/');
+            $route.reload();
+        };
+
+        vm.toggleMobileMenu = function() {
+            vm.menuCollapsed = !vm.menuCollapsed;
         };
 
         vm.init();

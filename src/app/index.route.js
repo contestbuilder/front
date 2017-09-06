@@ -29,6 +29,17 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
     })
 
 
+    /* invitations */
+    .when(frontUrls.urls.invitation.regular, {
+        templateUrl : 'app/invitations/regular/regular-invitation.html',
+        controller  : 'RegularInvitationController',
+        controllerAs: 'vm',
+        resolve     : {
+            routeUser: getUserById
+        }
+    })
+
+
     /* logs */
     .when(frontUrls.urls.log, {
         templateUrl : 'app/logs/view-all/view-all-logs.html',
@@ -278,6 +289,12 @@ function getMe(authService) {
 function getUser($route, frontUrls, userService) {
     return userService.getUser(
         $route.current.params[frontUrls.paramKeys.user]
+    );
+}
+
+function getUserById($route, frontUrls, userService) {
+    return userService.getUserById(
+        $route.current.params[frontUrls.paramKeys.user_id]
     );
 }
 

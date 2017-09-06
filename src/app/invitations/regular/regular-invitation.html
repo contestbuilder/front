@@ -1,0 +1,57 @@
+<navbar></navbar>
+
+<div class="container">
+	<div class="row">
+		<div class="col-12 offset-md-3 col-md-6">
+			<h1 class="page-title">Faça seu cadastro</h1>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12 offset-md-3 col-md-6">
+			<form novalidate name="invitationForm" ng-submit="vm.submit(vm.form);">
+				<div class="form-group">
+					<label class="form-label-static" for="contest-name">E-mail</label>
+					<p>{{ vm.form.email }}</p>
+				</div>
+
+				<div class="form-group">
+					<label for="user-username">Nome de usuário</label>
+					<input 
+						type="text" 
+						name="username" 
+						ng-model="vm.form.username"
+						class="form-control"
+						id="user-username"
+						placeholder="Nome de usuário" 
+						ng-required="true"
+					>
+				</div>
+
+				<div class="form-group">
+					<label for="user-password">Senha</label>
+					<input 
+						type="password" 
+						name="password" 
+						ng-model="vm.form.password"
+						class="form-control"
+						id="user-password"
+						placeholder="Senha" 
+						ng-required="true" 
+					>
+				</div>
+
+				<a
+					role="button"
+					class="btn btn-secondary"
+					ng-href="{{ 'main' | url }}"
+				>Cancelar</a>
+				<button 
+					type="submit" 
+					class="btn btn-primary"
+					ng-disabled="invitationForm.$invalid"
+				>Salvar</button>
+			</form>
+		</div>
+	</div>
+</div>

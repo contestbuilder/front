@@ -7,6 +7,7 @@ angular
     .constant('moment', moment)
     .constant('PromiseProcess', promiseProcess)
     .constant('apiUrl', 'http://localhost:3010/api/v1/')
+    // .constant('apiUrl', 'http://18.231.43.57:3010/api/v1/')
     .constant('languages', languages())
     .constant('verdicts', verdicts())
     .constant('frontUrls', frontUrls());
@@ -62,7 +63,8 @@ function frontUrls() {
 		problem:     'problem_nickname',
 		solution:    'solution_nickname',
 		testCase:    'test_case_id',
-		solutionRun: 'run_number'
+		solutionRun: 'run_number',
+		user_id:     'user_id'
 	};
 
 	var urls = {
@@ -73,6 +75,9 @@ function frontUrls() {
 			new:  '/users/new',
 			view: '/users/:user_nickname',
 			list: '/users'
+		},
+		invitation: {
+			regular: '/invitation/:user_id'
 		},
 		contest: {
 			new:  '/contests/new',

@@ -23,8 +23,22 @@ function userService($http, apiUrl) {
         });
     };
 
+    service.getUserById = function(_id) {
+        return $http.get(apiUrl + 'user/' + _id)
+        .then(function(result) {
+            return result.data.user;
+        });
+    };
+
     service.createUser = function(user) {
         return $http.post(apiUrl + 'user', user)
+        .then(function(result) {
+            return result.data.user;
+        });
+    };
+
+    service.editUser = function(username, user) {
+        return $http.put(apiUrl + 'user/' + username, user)
         .then(function(result) {
             return result.data.user;
         });
@@ -35,7 +49,7 @@ function userService($http, apiUrl) {
         .then(function(result) {
             return result.data.user;
         });
-    }
+    };
 
     return service;
 }
