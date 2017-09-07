@@ -30,7 +30,12 @@ function EditTestCaseController($location, $filter, routeContest, routeProblem, 
             input:  form.input,
             output: form.output
         }).then(function(test_case) {
-            $location.path($filter('url')('contest.problem.testCase.view', vm.contest.nickname, vm.problem.nickname, test_case._id));
+            $location.path($filter('url')(
+                'contest.problem.testCase.view', 
+                vm.contest.nickname, 
+                vm.problem.nickname, 
+                test_case._id
+            ));
         });
     };
 

@@ -6,7 +6,7 @@ angular
     .controller('CreateProblemController', CreateProblemController);
 
 /** @ngInject */
-function CreateProblemController($location, $routeParams, problemService, routeContest) {
+function CreateProblemController($location, $filter, $routeParams, problemService, routeContest) {
     var vm = this;
 
     vm.init = function() {
@@ -27,7 +27,11 @@ function CreateProblemController($location, $routeParams, problemService, routeC
             description: form.description,
             time_limit:  form.time_limit
         }).then(function(problem) {
-            $location.path('/contests/' + vm.contest_nickname + '/problems/' + problem.nickname);
+            $location.path($filter('url')(
+                'contest.problem.view',
+                vm.contest_nickname,
+                problem.nickname
+            ));
         });
     };
 

@@ -6,7 +6,7 @@ angular
     .service('authInterceptor', authInterceptor);
 
 /** @ngInject */
-function authInterceptor($q, $location, $injector) {
+function authInterceptor($q, $injector) {
     var interceptor = this;
 
     interceptor.responseError = function(response) {

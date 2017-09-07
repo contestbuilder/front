@@ -6,7 +6,7 @@ angular
     .controller('CreateUserController', CreateUserController);
 
 /** @ngInject */
-function CreateUserController(userService) {
+function CreateUserController($location, $filter, userService) {
     var vm = this;
 
     vm.init = function() {
@@ -14,10 +14,11 @@ function CreateUserController(userService) {
 
     vm.submit = function() {
         userService.createUser({
-            username: vm.form.username,
-            email:    vm.form.email
+            username:            vm.form.username,
+            email:               vm.form.email,
+            sendEmailInvitation: true
         }).then(function(user) {
-            console.log(user);
+            $location.path($filter('url')('user.view', user.username));
         });
     };
 

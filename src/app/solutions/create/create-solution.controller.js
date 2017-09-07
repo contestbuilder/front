@@ -6,7 +6,7 @@ angular
     .controller('CreateSolutionController', CreateSolutionController);
 
 /** @ngInject */
-function CreateSolutionController($location, $routeParams, languages, solutionService, routeContest, routeProblem) {
+function CreateSolutionController($location, $filter, $routeParams, languages, solutionService, routeContest, routeProblem) {
     var vm = this;
 
     vm.init = function() {
@@ -25,7 +25,12 @@ function CreateSolutionController($location, $routeParams, languages, solutionSe
             source_code: form.source_code,
             language:    form.language
         }).then(function(solution) {
-            $location.path('/contests/' + vm.contest_nickname + '/problems/' + vm.problem_nickname + '/solutions/' + solution.nickname);
+            $location.path($filter('url')(
+                'contest.problem.solution.view',
+                vm.contest_nickname,
+                vm.problem_nickname,
+                solution.nickname
+            ));
         });
     };
 

@@ -6,7 +6,7 @@ angular
     .controller('CreateContributorController', CreateContributorController);
 
 /** @ngInject */
-function CreateContributorController($location, userService, contributorService, routeContest) {
+function CreateContributorController($location, $filter, userService, contributorService, routeContest) {
     var vm = this;
 
     vm.init = function() {
@@ -28,7 +28,10 @@ function CreateContributorController($location, userService, contributorService,
             user_id: vm.form.user._id
         })
         .then(function(contest) {
-            $location.path('/contests/' + vm.contest.nickname);
+            $location.path($filter('url')(
+                'contest.view',
+                vm.contest.nickname
+            ));
         });
     };
 

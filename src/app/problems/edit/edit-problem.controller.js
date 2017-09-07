@@ -6,7 +6,7 @@ angular
     .controller('EditProblemController', EditProblemController);
 
 /** @ngInject */
-function EditProblemController($location, problemService, routeContest, routeProblem) {
+function EditProblemController($location, $filter, problemService, routeContest, routeProblem) {
     var vm = this;
 
     vm.init = function() {
@@ -31,7 +31,11 @@ function EditProblemController($location, problemService, routeContest, routePro
             description: form.description,
             time_limit:  form.time_limit
         }).then(function(problem) {
-            $location.path('/contests/' + vm.contest.nickname + '/problems/' + problem.nickname);
+            $location.path($filter('url')(
+                'contest.problem.view',
+                vm.contest.nickname,
+                problem.nickname
+            ));
         });
     };
 

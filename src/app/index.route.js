@@ -258,27 +258,27 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 }
 
 /** @ngInject */
-function AppController($rootScope, $location) {
+function AppController($rootScope, $location, $filter) {
     $rootScope.$on('$routeChangeError', function(event, current, previous, rejection) {
         if(rejection && rejection.data && rejection.data.error) {
             switch(rejection.data.error) {
                 case 'Access denied':
                     $location.search('message', 'access_denied');
-                    $location.path('/login');
+                    $location.path($filter('url')('login'));
                     break;
                 
                 case 'TokenExpiredError: jwt expired':
                     $location.search('message', 'token_expired');
-                    $location.path('/login');
+                    $location.path($filter('url')('login'));
                     return;
 
                 default:
-                    $location.path('/login');
+                    $location.path($filter('url')('login'));
                     return;
             }
         }
 
-        $location.path('/login');
+        $location.path($filter('url')('login'));
     });
 }
 

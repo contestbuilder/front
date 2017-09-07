@@ -6,7 +6,7 @@ angular
     .controller('CreateContestController', CreateContestController);
 
 /** @ngInject */
-function CreateContestController($location, contestService, routeMe) {
+function CreateContestController($location, $filter, contestService, routeMe) {
     var vm = this;
 
     vm.init = function() {
@@ -17,7 +17,9 @@ function CreateContestController($location, contestService, routeMe) {
         contestService.createContest({
             name: vm.form.name
         }).then(function(contest) {
-            $location.path('/contests');
+            $location.path($filter('url')(
+                'contest.list'
+            ));
         });
     };
 

@@ -6,7 +6,7 @@ angular
     .controller('EditSolutionController', EditSolutionController);
 
 /** @ngInject */
-function EditSolutionController($location, languages, solutionService, routeContest, routeProblem, routeSolution) {
+function EditSolutionController($location, $filter, languages, solutionService, routeContest, routeProblem, routeSolution) {
     var vm = this;
 
     vm.init = function() {
@@ -33,7 +33,12 @@ function EditSolutionController($location, languages, solutionService, routeCont
             source_code: form.source_code,
             language:    form.language
         }).then(function(solution) {
-            $location.path('/contests/' + vm.contest.nickname + '/problems/' + vm.problem.nickname + '/solutions/' + solution.nickname);
+            $location.path($filter('url')(
+                'contest.problem.solution.view',
+                vm.contest.nickname,
+                vm.problem.nickname,
+                solution.nickname
+            ));
         });
     };
 

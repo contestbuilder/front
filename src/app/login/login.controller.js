@@ -6,12 +6,12 @@ angular
     .controller('LoginController', LoginController);
 
 /** @ngInject */
-function LoginController($route, $location, authService) {
+function LoginController($route, $filter, $location, authService) {
     var vm = this;
 
     vm.init = function() {
     	if(authService.isLogged()) {
-    		$location.path('/');
+    		$location.path($filter('url', 'main'));
     	}
 
         var queryMessage = $location.search().message;
