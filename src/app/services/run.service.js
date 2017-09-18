@@ -3,10 +3,10 @@
 
 angular
     .module('front')
-    .service('solutionRunsService', solutionRunsService);
+    .service('runService', runService);
 
 /** @ngInject */
-function solutionRunsService($http, apiUrl) {
+function runService($http, apiUrl) {
     var service = this;
 
     service.runSolutions = function(contest_nickname, problem_nickname, data) {
@@ -19,12 +19,22 @@ function solutionRunsService($http, apiUrl) {
         });
     };
 
-    service.getValidatedTestCases = function(problem, solution) {
+    service.runCheckers = function(contest_nickname, problem_nickname, data) {
+        return $http.post(
+            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/run/checkers', 
+            data
+        )
+        .then(function(result) {
+            return result.data.results;
+        });
+    };
+
+    service.getValidatedTestCases = function(problem, runs, versions) {
         var test_cases = angular.copy(problem.test_cases);
-        var runs = angular.copy(solution.run).reverse();
+        var runs = angular.copy(runs).reverse();
 
         runs.forEach(function(run) {
-            if(hasCriticalAfter(solution.v, run.timestamp)) {
+            if(hasCriticalAfter(versions, run.timestamp)) {
                 return;
             }
 

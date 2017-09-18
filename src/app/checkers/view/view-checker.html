@@ -1,0 +1,45 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+	problem="vm.problem"
+	checker="vm.checker"
+></breadcrumbs>
+
+<div id="view-checker">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h2 class="page-title">{{ vm.checker.name }}</h2>
+			</div>
+		</div>
+
+		<!-- info -->
+		<div class="row">
+			<div class="col-12">
+				<p>Linguagem: {{ vm.checker.current.language.label }}</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<p>Código fonte:</p>
+				<pre>{{ vm.checker.current.source_code }}</pre>
+			</div>
+		</div>
+	</div>
+
+	<!-- actions -->
+	<div class="container action-list">
+		<div class="row">
+			<div class="col-12">
+				<a
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.problem.checker.edit' | url : vm.contest.nickname : vm.problem.nickname : vm.checker.nickname }}"
+				>Editar checker</a>
+			</div>
+		</div>
+	</div>
+</div>

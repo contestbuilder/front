@@ -6,7 +6,7 @@ angular
     .controller('RegularInvitationController', RegularInvitationController);
 
 /** @ngInject */
-function RegularInvitationController($location, $routeParams, $route, authService, routeUser, userService) {
+function RegularInvitationController($location, $routeParams, $filter, $route, authService, routeUser, userService) {
     var vm = this;
 
     vm.init = function() {

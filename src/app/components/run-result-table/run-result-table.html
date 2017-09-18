@@ -8,14 +8,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr ng-repeat="solution in vm.solutions">
-					<td>{{ solution.name }}</td>
+				<tr ng-repeat="item in vm.items">
+					<td>{{ item.name }}</td>
 					<td ng-repeat="test_case in vm.testCases">
 						<span
-							ng-if="vm.getSolutionTestCaseRun(vm.solutionRuns, solution._id, test_case._id)"
-							ng-click="vm.selectRun(vm.solutionRuns, solution._id, test_case._id)"
+							ng-if="vm.getTestCaseRun(vm.runs, item._id, test_case._id)"
+							ng-click="vm.selectRun(vm.runs, item._id, test_case._id)"
 						>
-							{{ vm.getSolutionTestCaseRun(vm.solutionRuns, solution._id, test_case._id).verdict.short }}
+							{{ vm.getTestCaseRun(vm.runs, item._id, test_case._id).verdict.short }}
 						</span>
 					</td>
 				</tr>
@@ -28,7 +28,7 @@
 	<div class="col-12">
 		<p>
 			<span>
-				<strong>{{ vm.selectedRun.solution.name }} / #{{ vm.selectedRun.test_case.current.order }}</strong>
+				<strong>{{ vm.selectedRun.item.name }} / #{{ vm.selectedRun.test_case.current.order }}</strong>
 			</span>
 			<span style="float: right;">
 				<i 
@@ -43,7 +43,7 @@
 
 	<div class="col-6">
 		<p><strong>Saída esperada:</strong></p>
-		<pre>{{ vm.selectedRun.test_case.current.output }}</pre>
+		<pre>{{ vm.customExpectedOutput ? vm.customExpectedOutput : vm.selectedRun.test_case.current.output }}</pre>
 	</div>
 	
 	<div class="col-6">

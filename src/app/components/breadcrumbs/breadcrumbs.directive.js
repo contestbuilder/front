@@ -21,6 +21,7 @@ function breadcrumbs() {
             contest:  '<',
             problem:  '<',
             solution: '<',
+            checker:  '<',
             testCase: '<',
 
             extra:    '<'  // list of extra labels/urls (for those who don't fit a pattern (yet))
@@ -65,6 +66,14 @@ function breadcrumbs() {
                             vm.items.push({
                                 label: vm.solution.name,
                                 url:   $filter('url')('contest.problem.solution.view', vm.contest.nickname, vm.problem.nickname, vm.solution.nickname)
+                            });
+                        }
+
+                        // checker Q
+                        if(vm.checker) {
+                            vm.items.push({
+                                label: vm.checker.name,
+                                url:   $filter('url')('contest.problem.checker.view', vm.contest.nickname, vm.problem.nickname, vm.checker.nickname)
                             });
                         }
 

@@ -62,6 +62,7 @@ function frontUrls() {
 		contest:     'contest_nickname',
 		problem:     'problem_nickname',
 		solution:    'solution_nickname',
+		checker:     'checker_nickname',
 		testCase:    'test_case_id',
 		solutionRun: 'run_number',
 		user_id:     'user_id'
@@ -104,6 +105,17 @@ function frontUrls() {
 					}
 				},
 
+				checker: {
+					new:  '/contests/:contest_nickname/problems/:problem_nickname/checkers/new',
+					view: '/contests/:contest_nickname/problems/:problem_nickname/checkers/:checker_nickname',
+					edit: '/contests/:contest_nickname/problems/:problem_nickname/checkers/:checker_nickname/edit',
+
+					run: {
+						list: '/contests/:contest_nickname/problems/:problem_nickname/checkers/:checker_nickname/runs',
+						view: '/contests/:contest_nickname/problems/:problem_nickname/checkers/:checker_nickname/runs/:run_number'
+					}
+				},
+
 				testCase: {
 					new:  '/contests/:contest_nickname/problems/:problem_nickname/test_cases/new',
 					view: '/contests/:contest_nickname/problems/:problem_nickname/test_cases/:test_case_id',
@@ -113,6 +125,11 @@ function frontUrls() {
 				solutionRun: {
 					list: '/contests/:contest_nickname/problems/:problem_nickname/solution_runs',
 					view: '/contests/:contest_nickname/problems/:problem_nickname/solution_runs/:run_number'
+				},
+
+				checkerRun: {
+					list: '/contests/:contest_nickname/problems/:problem_nickname/checker_runs',
+					view: '/contests/:contest_nickname/problems/:problem_nickname/checker_runs/:run_number'
 				}
 			}
 		}

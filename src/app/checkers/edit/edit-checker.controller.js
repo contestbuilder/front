@@ -3,17 +3,17 @@
 
 angular
     .module('front')
-    .controller('EditSolutionController', EditSolutionController);
+    .controller('EditCheckerController', EditCheckerController);
 
 /** @ngInject */
-function EditSolutionController($location, $filter, languages, solutionService, routeContest, routeProblem, routeSolution) {
+function EditCheckerController($location, $filter, languages, checkerService, routeContest, routeProblem, routeChecker) {
     var vm = this;
 
     vm.init = function() {
         vm.contest = routeContest;
         vm.problem = routeProblem;
-        vm.solution = routeSolution;
-        vm.solution.current = vm.solution.v[ vm.solution.v.length-1 ];
+        vm.checker = routeChecker;
+        vm.checker.current = vm.checker.v[ vm.checker.v.length-1 ];
 
         vm.languages = languages;
         fillInitialValues();
@@ -21,21 +21,21 @@ function EditSolutionController($location, $filter, languages, solutionService, 
 
     function fillInitialValues() {
         vm.form = {
-            source_code: vm.solution.current.source_code,
-            language:    vm.solution.current.language
+            source_code: vm.checker.current.source_code,
+            language:    vm.checker.current.language
         };
     }
 
     vm.submit = function(form) {
-        solutionService.editSolution(vm.contest.nickname, vm.problem.nickname, vm.solution.nickname, {
+        checkerService.editChecker(vm.contest.nickname, vm.problem.nickname, vm.checker.nickname, {
             source_code: form.source_code,
             language:    form.language
-        }).then(function(solution) {
+        }).then(function(checker) {
             $location.path($filter('url')(
-                'contest.problem.solution.view',
+                'contest.problem.checker.view',
                 vm.contest.nickname,
                 vm.problem.nickname,
-                solution.nickname
+                checker.nickname
             ));
         });
     };

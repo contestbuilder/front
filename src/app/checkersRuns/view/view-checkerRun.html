@@ -6,13 +6,13 @@
 	problem="vm.problem"
 	extra="[{
 		label: 'Execuções',
-		url:   vm.urlFilter('contest.problem.solutionRun.list', vm.contest.nickname, vm.problem.nickname)
+		url:   vm.urlFilter('contest.problem.checkerRun.list', vm.contest.nickname, vm.problem.nickname)
 	}, {
 		label: 'Execução ' + vm.runNumber
 	}]"
 ></breadcrumbs>
 
-<div id="view-solutionRun">
+<div id="view-checkerRun">
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
@@ -22,9 +22,10 @@
 
 		<run-result-table
 			problem="vm.problem"
-			solutions="true"
+			checkers="true"
 			test-cases="vm.problem.test_cases"
 			run-number="vm.runNumber"
+			custom-expected-output="'ok\n'"
 		></run-result-table>
 	</div>
 </div>

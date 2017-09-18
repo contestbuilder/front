@@ -13,8 +13,11 @@ function runResultTable() {
         scope           : {
             problem:   '<',
             solutions: '<',
+            checkers:  '<',
             testCases: '<',
-            runNumber: '<'
+            runNumber: '<',
+
+            customExpectedOutput: '<'
         },
         controller      : RunResultTableController,
         controllerAs    : 'vm',
@@ -30,41 +33,55 @@ function runResultTable() {
         vm.init = function() {
             // if not defined which solutions should be shown, 
             // it will show all the solutions that were run.
-            if(!vm.solutions) {
-                vm.solutions = vm.problem.solutions.filter(function(solution) {
+            if(typeof vm.solutions === 'boolean' && vm.solutions) {
+                vm.items = vm.problem.solutions.filter(function(solution) {
                     return solution.run.some(function(solutionRun) {
                         return solutionRun.run_number == vm.runNumber;
                     });
                 });
+            } else if(Array.isArray(vm.solutions)) {
+                vm.items = vm.solutions;
+            }
+
+            // if not defined which checkers should be shown, 
+            // it will show all the checkers that were run.
+            if(typeof vm.checkers === 'boolean' && vm.checkers) {
+                vm.items = vm.problem.checkers.filter(function(solution) {
+                    return solution.run.some(function(solutionRun) {
+                        return solutionRun.run_number == vm.runNumber;
+                    });
+                });
+            } else if(Array.isArray(vm.checkers)) {
+                vm.items = vm.checkers;
             }
 
             // all the runs with the run_number.
-            vm.solutionRuns = vm.solutions.reduce(function(prev, solution) {
+            vm.runs = vm.items.reduce(function(prev, item) {
                 return prev.concat(
-                    solution.run
-                    .filter(function(solutionRun) {
-                        return solutionRun.run_number == vm.runNumber;
+                    item.run
+                    .filter(function(itemRun) {
+                        return itemRun.run_number == vm.runNumber;
                     })
-                    .map(function(solutionRun) {
-                        solutionRun.solution          = solution;
-                        solutionRun.test_case         = getTestCase(vm.problem, solutionRun.test_case_id);
-                        solutionRun.test_case.current = solutionRun.test_case.v[ solutionRun.test_case.v.length-1 ];
+                    .map(function(itemRun) {
+                        itemRun.item              = item;
+                        itemRun.test_case         = getTestCase(vm.problem, itemRun.test_case_id);
+                        itemRun.test_case.current = itemRun.test_case.v[ itemRun.test_case.v.length-1 ];
 
-                        return solutionRun;
+                        return itemRun;
                     })
                 );
             }, []);
 
             // all the test_cases that were tested.
-            vm.testCases = vm.solutionRuns.reduce(function(prev, solutionRun) {
+            vm.testCases = vm.runs.reduce(function(prev, solutionRun) {
                 if(prev.indexOf(solutionRun.test_case) === -1) {
                     prev.push(solutionRun.test_case);
                 }
                 return prev;
             }, []);
 
-            // map with all the solution/test_case results.
-            vm.solutionTestCaseRunMap = {};
+            // map with all the item/test_case results.
+            vm.testCaseRunMap = {};
         };
 
         function getTestCase(problem, test_case_id) {
@@ -73,27 +90,27 @@ function runResultTable() {
             })[0];
         }
 
-        vm.selectRun = function(solutionRuns, solution_id, test_case_id) {
-            vm.selectedRun = vm.getSolutionTestCaseRun(solutionRuns, solution_id, test_case_id);
+        vm.selectRun = function(runs, item_id, test_case_id) {
+            vm.selectedRun = vm.getTestCaseRun(runs, item_id, test_case_id);
         };
 
         vm.unselectRun = function() {
             vm.selectedRun = null;
         };
 
-        vm.getSolutionTestCaseRun = function(solutionRuns, solution_id, test_case_id) {
-            if(vm.solutionTestCaseRunMap[solution_id + '-' + test_case_id] === undefined) {
-                var solutionTestCaseRun = solutionRuns.filter(function(solutionRun) {
-                    return solutionRun.solution._id  == solution_id
-                        && solutionRun.test_case._id == test_case_id;
+        vm.getTestCaseRun = function(runs, item_id, test_case_id) {
+            if(vm.testCaseRunMap[item_id + '-' + test_case_id] === undefined) {
+                var testCaseRun = runs.filter(function(run) {
+                    return run.item._id  == item_id
+                        && run.test_case._id == test_case_id;
                 })[0];
 
-                solutionTestCaseRun.verdict = utilService.getVerdict(solutionTestCaseRun.verdict);
+                testCaseRun.verdict = utilService.getVerdict(testCaseRun.verdict);
 
-                vm.solutionTestCaseRunMap[solution_id + '-' + test_case_id] = solutionTestCaseRun;
+                vm.testCaseRunMap[item_id + '-' + test_case_id] = testCaseRun;
             }
 
-            return vm.solutionTestCaseRunMap[solution_id + '-' + test_case_id];
+            return vm.testCaseRunMap[item_id + '-' + test_case_id];
         };
 
         vm.init();

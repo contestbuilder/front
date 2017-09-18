@@ -176,6 +176,38 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
     })
 
 
+    /* checkers */
+    .when(frontUrls.urls.contest.problem.checker.new, {
+        templateUrl : 'app/checkers/create/create-checker.html',
+        controller  : 'CreateCheckerController',
+        controllerAs: 'vm',
+        resolve     : {
+            routeContest: getContest,
+            routeProblem: getProblem
+        }
+    })
+    .when(frontUrls.urls.contest.problem.checker.view, {
+        templateUrl : 'app/checkers/view/view-checker.html',
+        controller  : 'ViewCheckerController',
+        controllerAs: 'vm',
+        resolve     : {
+            routeContest: getContest,
+            routeProblem: getProblem,
+            routeChecker: getChecker
+        }
+    })
+    .when(frontUrls.urls.contest.problem.checker.edit, {
+        templateUrl : 'app/checkers/edit/edit-checker.html',
+        controller  : 'EditCheckerController',
+        controllerAs: 'vm',
+        resolve     : {
+            routeContest: getContest,
+            routeProblem: getProblem,
+            routeChecker: getChecker
+        }
+    })
+
+
     /* test cases */
     .when(frontUrls.urls.contest.problem.testCase.new, {
         templateUrl : 'app/testCases/create/create-testCase.html',
@@ -241,6 +273,47 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
     .when(frontUrls.urls.contest.problem.solutionRun.view, {
         templateUrl : 'app/solutionsRuns/view/view-solutionRun.html',
         controller  : 'ViewProblemSolutionRunController',
+        controllerAs: 'vm',
+        resolve     : {
+            routeContest: getContest,
+            routeProblem: getProblem
+        }
+    })
+
+
+    /* checker runs */
+    .when(frontUrls.urls.contest.problem.checker.run.list, {
+        templateUrl : 'app/checkers/runs/list/checker-runs.html',
+        controller  : 'ViewCheckerRunsController',
+        controllerAs: 'vm',
+        resolve     : {
+            routeContest: getContest,
+            routeProblem: getProblem,
+            routeChecker: getChecker
+        }
+    })
+    .when(frontUrls.urls.contest.problem.checker.run.view, {
+        templateUrl : 'app/checkers/runs/view/checker-run.html',
+        controller  : 'ViewCheckerRunController',
+        controllerAs: 'vm',
+        resolve     : {
+            routeContest: getContest,
+            routeProblem: getProblem,
+            routeChecker: getChecker
+        }
+    })
+    .when(frontUrls.urls.contest.problem.checkerRun.list, {
+        templateUrl : 'app/checkersRuns/list/checkerRuns-list.html',
+        controller  : 'ViewProblemCheckerRunsController',
+        controllerAs: 'vm',
+        resolve     : {
+            routeContest: getContest,
+            routeProblem: getProblem
+        }
+    })
+    .when(frontUrls.urls.contest.problem.checkerRun.view, {
+        templateUrl : 'app/checkersRuns/view/view-checkerRun.html',
+        controller  : 'ViewProblemCheckerRunController',
         controllerAs: 'vm',
         resolve     : {
             routeContest: getContest,
@@ -316,6 +389,14 @@ function getSolution($route, frontUrls, solutionService) {
         $route.current.params[frontUrls.paramKeys.contest],
         $route.current.params[frontUrls.paramKeys.problem],
         $route.current.params[frontUrls.paramKeys.solution]
+    );
+}
+
+function getChecker($route, frontUrls, checkerService) {
+    return checkerService.getChecker(
+        $route.current.params[frontUrls.paramKeys.contest],
+        $route.current.params[frontUrls.paramKeys.problem],
+        $route.current.params[frontUrls.paramKeys.checker]
     );
 }
 

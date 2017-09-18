@@ -98,10 +98,6 @@
 				<div class="col-12">
 					<p ng-if="item.validation.status === 'waiting'">Carregando</p>
 					<p ng-if="item.validation.status === 'done'">{{ item.validation.result.results | json }}</p>
-					<!-- <a
-						ng-if="item.validation.status === 'done'"
-						ng-href="{{ 'contest.problem.solution.run.view' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname : item.validation.result.run_number }}"
-					>Ver detalhes</a> -->
 				</div>
 			</div>
 		</generic-list>
@@ -166,6 +162,99 @@
 					role="button"
 					ng-href="{{ 'contest.problem.testCase.new' | url : vm.contest.nickname : vm.problem.nickname }}"
 				>Adicionar caso de teste</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- checkers list -->
+	<div class="container checkers-list">
+		<div class="row">
+			<div class="col-12">
+				<h4>Checkers:</h4>
+			</div>
+		</div>
+
+		<generic-list
+			items="vm.problem.checkers"
+			no-items-message="'Nenhum checker cadastrado.'"
+			headers="[
+				{ label: 'Nome',            class: 'col-4' },
+				{ label: 'Casos validados', class: 'col-4' },
+				{ label: 'Ações',           class: 'col-4' }
+			]"
+			parent="vm"
+		>
+			<div class="row">
+				<div class="col-4">
+					<a 
+						ng-href="{{ 'contest.problem.checker.view' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname }}"
+					>{{ item.name }}</a>
+				</div>
+				<div class="col-4">
+					<span ng-if="!item.validatedTestCases">
+						{{ item.validatedTestCases }}/{{ list.parent.problem.test_cases.length }}
+					</span>
+					<a
+						ng-if="item.validatedTestCases"
+						ng-href="{{ 'contest.problem.checker.run.list' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname }}"
+					>{{ item.validatedTestCases }}/{{ list.parent.problem.test_cases.length }}</a>
+				</div>
+				<div class="col-4">
+					<!-- remover -->
+					<button
+						class="btn btn-danger"
+						type="button"
+						modal-confirm="list.parent.deleteChecker(item)"
+						modal-confirm-title="'Remover checker'"
+						modal-confirm-body="'Tem certeza que deseja remover este checker?'"
+					>
+						<i class="fa fa-trash" aria-hidden="true"></i>
+					</button>
+
+					<!-- validar -->
+					<button
+						class="btn btn-primary"
+						ng-class="{ 'loading-button': item.validation && item.validation.status == 'waiting' }"
+						type="button"
+						ng-click="list.parent.runChecker($index)"
+						ng-disabled="
+							item.validatedTestCases == list.parent.problem.test_cases.length
+							|| (item.validation && item.validation.status == 'waiting')
+						"
+					>
+						<img
+							ng-if="item.validation && item.validation.status == 'waiting'"
+							src="assets/images/ripple.svg"
+						>
+						<i
+							ng-if="!item.validation || item.validation.status != 'waiting'"
+							class="fa fa-check" 
+							aria-hidden="true"
+						></i>
+					</button>
+				</div>
+			</div>
+
+			<div class="row" ng-if="item.validation">
+				<div class="col-12">
+					<p ng-if="item.validation.status === 'waiting'">Carregando</p>
+					<p ng-if="item.validation.status === 'done'">{{ item.validation.result.results | json }}</p>
+				</div>
+			</div>
+		</generic-list>
+
+		<div class="row" ng-if="!vm.problem.deleted_at">
+			<div class="col-6">
+				<a
+					ng-href="{{ 'contest.problem.checkerRun.list' | url : vm.contest.nickname : vm.problem.nickname }}"
+				>Ver todas as execuções</a>
+			</div>
+			<div class="col-6">
+				<a
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.problem.checker.new' | url : vm.contest.nickname : vm.problem.nickname }}"
+				>Adicionar checker</a>
 			</div>
 		</div>
 	</div>

@@ -4,21 +4,30 @@
 	contests="true"
 	contest="vm.contest"
 	problem="vm.problem"
-	solution="vm.solution"
-	edit="true"
+	new="'o checker'"
 ></breadcrumbs>
 
 <div class="container">
 	<div class="row">
 		<div class="col-12">
-			<h1 class="page-title">Editar solução</h1>
+			<h1 class="page-title">Cadastrar novo checker</h1>
 		</div>
 	</div>
 
 	<div class="row">
 		<div class="col-12">
-			<form novalidate name="solutionForm" ng-submit="vm.submit(vm.form);">
-				<p>{{ vm.solution.name }}</p>
+			<form novalidate name="checkerForm" ng-submit="vm.submit(vm.form);">
+				<div class="form-group">
+					<input 
+						type="text" 
+						name="name" 
+						ng-model="vm.form.name"
+						class="form-control"
+						id="solution-name"
+						placeholder="Nome" 
+						ng-required="true" 
+					>
+				</div>
 
 				<div class="form-group">
 					<textarea
@@ -47,12 +56,12 @@
 				<a
 					role="button"
 					class="btn btn-secondary"
-					ng-href="{{ 'contest.problem.solution.view' | url : vm.contest.nickname : vm.problem.nickname : vm.solution.nickname }}"
+					ng-href="{{ 'contest.problem.view' | url : vm.contest_nickname : vm.problem_nickname }}"
 				>Cancelar</a>
 				<button 
 					type="submit" 
 					class="btn btn-primary"
-					ng-disabled="solutionForm.$invalid"
+					ng-disabled="checkerForm.$invalid"
 				>Salvar</button>
 			</form>
 		</div>

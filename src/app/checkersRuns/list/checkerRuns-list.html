@@ -1,0 +1,25 @@
+<navbar></navbar>
+
+<breadcrumbs
+	contests="true"
+	contest="vm.contest"
+	problem="vm.problem"
+	extra="[{
+		label: 'Execuções'
+	}]"
+></breadcrumbs>
+
+<div id="checker-runs">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<h2 class="page-title">{{ vm.problem.name }} - Execuções</h2>
+			</div>
+		</div>
+
+		<runs-list
+			runs="vm.runs"
+			get-link="vm.getRunLink"
+		></runs-list>
+	</div>
+</div>
