@@ -37,6 +37,20 @@ function contestService($http, apiUrl) {
         });
     };
 
+    service.generateBocaZip = function(nickname, data) {
+        return $http.post(apiUrl + 'contest/' + nickname + '/boca', data)
+        .then(function(result) {
+            return result.data.bocaZip;
+        });
+    };
+
+    service.downloadBocaZip = function(nickname, versionId) {
+        return $http.get(apiUrl + 'contest/' + nickname + '/boca/download')
+        .then(function(result) {
+            return result.data.signedUrl;
+        });
+    };
+
     return service;
 }
 

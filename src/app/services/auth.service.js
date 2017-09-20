@@ -48,6 +48,10 @@ function authService($q, $http, $window, apiUrl) {
         return !!$window.localStorage.getItem('token');
     };
 
+    service.getToken = function() {
+        return $window.localStorage.getItem('token');
+    };
+
     return service;
 }
 

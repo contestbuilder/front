@@ -6,12 +6,14 @@ angular
     .controller('ViewContestController', ViewContestController);
 
 /** @ngInject */
-function ViewContestController(contestService, contributorService, problemService, routeMe, routeContest) {
+function ViewContestController(authService, downloadService, contestService, contributorService, problemService, routeMe, routeContest) {
     var vm = this;
 
     vm.init = function() {
-        vm.me = routeMe;
+        vm.me      = routeMe;
         vm.contest = routeContest;
+
+        updateLastBocaZip(vm.contest.bocaZip);
     };
 
     vm.canI = function(action, obj) {
@@ -50,6 +52,48 @@ function ViewContestController(contestService, contributorService, problemServic
                 vm.contest = contest;
             });
         };
+    };
+
+    function updateLastBocaZip(bocaZipList) {
+        if(!Array.isArray(bocaZipList) || !bocaZipList.length) {
+            return vm.latestBocaZip = null;
+        }
+
+        vm.latestBocaZip = bocaZipList[ bocaZipList.length-1 ];
+        vm.latestBocaZip.downloadUrl = 'http://localhost:3010/api/v1' +
+            '/contest/' + vm.contest.nickname + 
+            '/boca/download' +
+            '?VersionId=' + vm.latestBocaZip.VersionId + 
+            '&token=' + authService.getToken();
+
+        return vm.latestBocaZip;
+    }
+
+    vm.generateZip = function() {
+        var problemNicknames = vm.contest.problems.map(function(problem) {
+            return problem.nickname;
+        });
+
+        contestService.generateBocaZip(vm.contest.nickname, {
+            problems: problemNicknames
+        })
+            .then(function(bocaZip) {
+                vm.contest.bocaZip.push(bocaZip);
+                updateLastBocaZip(vm.contest.bocaZip);
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    };
+
+    vm.downloadZip = function(versionId) {
+        contestService.downloadBocaZip(vm.contest.nickname, versionId)
+            .then(function(signedUrl) {
+                downloadService.download(signedUrl);
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
     };
 
     vm.init();

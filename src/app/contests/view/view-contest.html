@@ -40,8 +40,15 @@
 	<!-- contributors list -->
 	<div class="container contributors-list">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-12 list-header">
 				<h4>Contribuidores:</h4>
+
+				<a
+					ng-if="!vm.contest.deleted_at"
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.contributor.new' | url : vm.contest.nickname }}"
+				>Adicionar contribuidor</a>
 			</div>
 		</div>
 
@@ -73,23 +80,20 @@
 				</div>
 			</div>
 		</generic-list>
-
-		<div class="row" ng-if="!vm.contest.deleted_at">
-			<div class="col-12">
-				<a
-					class="btn btn-primary float-right"
-					role="button"
-					ng-href="{{ 'contest.contributor.new' | url : vm.contest.nickname }}"
-				>Adicionar contribuidor</a>
-			</div>
-		</div>
 	</div>
 
 	<!-- problems list -->
 	<div class="container problems-list">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-12 list-header">
 				<h4>Problemas:</h4>
+
+				<a
+					ng-if="!vm.contest.deleted_at"
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.problem.new' | url : vm.contest.nickname }}"
+				>Adicionar problema</a>
 			</div>
 		</div>
 
@@ -121,14 +125,42 @@
 				</div>
 			</div>
 		</generic-list>
+	</div>
 
-		<div class="row" ng-if="!vm.contest.deleted_at">
+	<!-- boca zip list -->
+	<div class="container boca-list">
+		<div class="row">
 			<div class="col-12">
-				<a
-					class="btn btn-primary float-right"
-					role="button"
-					ng-href="{{ 'contest.problem.new' | url : vm.contest.nickname }}"
-				>Adicionar problema</a>
+				<h4>Exportar arquivos:</h4>
+			</div>
+		</div>
+
+		<div class="row" ng-if="!vm.latestBocaZip">
+			<div class="col-12">
+				<p>Contest ainda não foi exportado.</p>
+			</div>
+		</div>
+
+		<div class="row" ng-if="vm.latestBocaZip">
+			<div class="col-12">
+				<p>Data da última exportação: {{ vm.latestBocaZip.timestamp | date : 'dd/MM/yyyy HH:mm' }}</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-12">
+				<button
+					type="button"
+					class="btn btn-primary"
+					ng-click="vm.generateZip();"
+				>Gerar zip</button>
+
+				<button
+					ng-if="vm.latestBocaZip"
+					type="button"
+					class="btn btn-primary"
+					ng-click="vm.downloadZip(vm.latestBocaZip.versionId);"
+				>Fazer download</button>
 			</div>
 		</div>
 	</div>

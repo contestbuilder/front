@@ -28,8 +28,15 @@
 	<!-- solutions list -->
 	<div class="container solutions-list">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-12 list-header">
 				<h4>Soluções:</h4>
+
+				<a
+					ng-if="!vm.problem.deleted_at"
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.problem.solution.new' | url : vm.contest.nickname : vm.problem.nickname }}"
+				>Adicionar solução</a>
 			</div>
 		</div>
 
@@ -103,17 +110,10 @@
 		</generic-list>
 
 		<div class="row" ng-if="!vm.problem.deleted_at">
-			<div class="col-6">
+			<div class="col-12">
 				<a
 					ng-href="{{ 'contest.problem.solutionRun.list' | url : vm.contest.nickname : vm.problem.nickname }}"
 				>Ver todas as execuções</a>
-			</div>
-			<div class="col-6">
-				<a
-					class="btn btn-primary float-right"
-					role="button"
-					ng-href="{{ 'contest.problem.solution.new' | url : vm.contest.nickname : vm.problem.nickname }}"
-				>Adicionar solução</a>
 			</div>
 		</div>
 	</div>
@@ -121,8 +121,15 @@
 	<!-- test cases list -->
 	<div class="container test-cases-list">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-12 list-header">
 				<h4>Casos de teste:</h4>
+
+				<a
+					ng-if="!vm.problem.deleted_at"
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.problem.testCase.new' | url : vm.contest.nickname : vm.problem.nickname }}"
+				>Adicionar caso de teste</a>
 			</div>
 		</div>
 
@@ -154,23 +161,20 @@
 				</div>
 			</div>
 		</generic-list>
-
-		<div class="row" ng-if="!vm.problem.deleted_at">
-			<div class="col-12">
-				<a
-					class="btn btn-primary float-right"
-					role="button"
-					ng-href="{{ 'contest.problem.testCase.new' | url : vm.contest.nickname : vm.problem.nickname }}"
-				>Adicionar caso de teste</a>
-			</div>
-		</div>
 	</div>
 
 	<!-- checkers list -->
 	<div class="container checkers-list">
 		<div class="row">
-			<div class="col-12">
+			<div class="col-12 list-header">
 				<h4>Checkers:</h4>
+
+				<a
+					ng-if="!vm.problem.deleted_at"
+					class="btn btn-primary float-right"
+					role="button"
+					ng-href="{{ 'contest.problem.checker.new' | url : vm.contest.nickname : vm.problem.nickname }}"
+				>Adicionar checker</a>
 			</div>
 		</div>
 
@@ -244,17 +248,10 @@
 		</generic-list>
 
 		<div class="row" ng-if="!vm.problem.deleted_at">
-			<div class="col-6">
+			<div class="col-12">
 				<a
 					ng-href="{{ 'contest.problem.checkerRun.list' | url : vm.contest.nickname : vm.problem.nickname }}"
 				>Ver todas as execuções</a>
-			</div>
-			<div class="col-6">
-				<a
-					class="btn btn-primary float-right"
-					role="button"
-					ng-href="{{ 'contest.problem.checker.new' | url : vm.contest.nickname : vm.problem.nickname }}"
-				>Adicionar checker</a>
 			</div>
 		</div>
 	</div>
