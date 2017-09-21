@@ -67,6 +67,30 @@ function CreateTestCaseController($scope, $location, $filter, PromiseProcess, ro
         });
     };
 
+
+    vm.loadTestCaseFromFile = function(index, fileType, file, errFiles) {
+        if(!file) {
+            return;
+        }
+
+        vm.form.test_cases[index][fileType + '-file'] = file.name;
+
+        var fileReader = new FileReader();
+        fileReader.onload = function(evt) {
+            $scope.$apply(function () {
+                vm.form.test_cases[index][fileType] = fileReader.result;
+            });
+        };
+        fileReader.onerror = function(evt) {
+        };
+        fileReader.readAsText(file);
+    };
+
+    vm.unnattachTestCaseFile = function(index, fileType) {
+        delete vm.form.test_cases[index][fileType + '-file'];
+        vm.form.test_cases[index][fileType] = '';
+    };
+
     vm.init();
     return vm;
 }

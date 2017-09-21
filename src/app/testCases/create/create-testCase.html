@@ -41,9 +41,33 @@
 						id="test-case-input"
 						placeholder="Entrada" 
 						ng-required="true" 
+						ng-disabled="testCaseNumber['input-file']"
 						ng-trim="false"
 						rows="6"
 					></textarea>
+
+					<!-- load from file -->
+					<button
+						ng-if="!testCaseNumber['input-file']"
+
+						type="button"
+						ngf-select="vm.loadTestCaseFromFile($index, 'input', $file, $invalidFiles)"
+						accept="'*'"
+						ngf-max-size="1MB"
+
+						class="btn btn-link"
+					>Carregar de arquivo</button>
+
+					<!-- current file -->
+					<span
+						ng-if="testCaseNumber['input-file']"
+					>{{ testCaseNumber['input-file'] }}</span>
+
+					<!-- unnattach file -->
+					<span
+						ng-if="testCaseNumber['input-file']"
+						ng-click="vm.unnattachTestCaseFile($index, 'input');"
+					>x</span>
 				</div>
 			</div>
 
@@ -58,9 +82,33 @@
 						id="test-case-output"
 						placeholder="Saída" 
 						ng-required="true" 
+						ng-disabled="testCaseNumber['output-file']"
 						ng-trim="false"
 						rows="6"
 					></textarea>
+
+					<!-- load from file -->
+					<button
+						ng-if="!testCaseNumber['output-file']"
+
+						type="button"
+						ngf-select="vm.loadTestCaseFromFile($index, 'output', $file, $invalidFiles)"
+						accept="'*'"
+						ngf-max-size="1MB"
+
+						class="btn btn-link"
+					>Carregar de arquivo</button>
+
+					<!-- current file -->
+					<span
+						ng-if="testCaseNumber['output-file']"
+					>{{ testCaseNumber['output-file'] }}</span>
+
+					<!-- unnattach file -->
+					<span
+						ng-if="testCaseNumber['output-file']"
+						ng-click="vm.unnattachTestCaseFile($index, 'output');"
+					>x</span>
 				</div>
 			</div>
 		</div>
