@@ -47,6 +47,45 @@ function problemService($http, apiUrl) {
         });
     };
 
+
+    service.downloadProblemFile = function(contest_nickname, problem_nickname, versionId) {
+        return $http.get(
+            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file'
+        )
+        .then(function(result) {
+            return result.data.signedUrl;
+        });
+    };
+
+    service.getUploadProblemFileSignedUrl = function(contest_nickname, problem_nickname, data) {
+        return $http.post(
+            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file',
+            data
+        )
+        .then(function(result) {
+            return result.data.signedUrl;
+        });
+    };
+
+    service.uploadProblemFile = function(contest_nickname, problem_nickname, data) {
+        return $http.put(
+            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file',
+            data
+        )
+        .then(function(result) {
+            return result.data.problem;
+        });
+    };
+
+    service.deleteProblemFile = function(contest_nickname, problem_nickname) {
+        return $http.delete(
+            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file'
+        )
+        .then(function(result) {
+            return result.data.problem;
+        });
+    };
+
     return service;
 }
 

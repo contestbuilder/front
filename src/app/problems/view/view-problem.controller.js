@@ -6,7 +6,7 @@ angular
     .controller('ViewProblemController', ViewProblemController);
 
 /** @ngInject */
-function ViewProblemController($routeParams, routeContest, routeProblem, solutionService, checkerService, testCaseService, runService) {
+function ViewProblemController($routeParams, downloadService, routeContest, routeProblem, problemService, solutionService, checkerService, testCaseService, runService) {
     var vm = this;
 
     vm.init = function() {
@@ -138,6 +138,28 @@ function ViewProblemController($routeParams, routeContest, routeProblem, solutio
             item.validatedTestCases = runService.getValidatedTestCases(problem, item.run, item.v);
         });
     }
+
+
+    vm.getSignedDownloadUrl = function() {
+        return problemService.downloadProblemFile(vm.contest.nickname, vm.problem.nickname);
+    };
+
+    vm.removeProblemFile = function() {
+        return problemService.deleteProblemFile(vm.contest.nickname, vm.problem.nickname);
+    };
+
+    vm.getSignedUploadUrl = function(fileName) {
+        return problemService.getUploadProblemFileSignedUrl(vm.contest.nickname, vm.problem.nickname, {
+            name: fileName
+        });
+    };
+
+    vm.uploadProblemFile = function(fileName) {
+        return problemService.uploadProblemFile(vm.contest.nickname, vm.problem.nickname, {
+            name: fileName
+        });
+    };
+
 
     vm.init();
     return vm;

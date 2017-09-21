@@ -17,7 +17,20 @@
 		<!-- info -->
 		<div class="row">
 			<div class="col-12">
-				<p>Descrição: {{ vm.problem.current.description }}</p>
+				<p>Descrição curta: {{ vm.problem.current.description }}</p>
+			</div>
+			<div class="col-12">
+				<p>
+					Descrição completa:
+					<single-attachment
+						file="vm.problem.file"
+
+						signed-download-callback="vm.getSignedDownloadUrl"
+						signed-upload-callback="vm.getSignedUploadUrl"
+						after-upload-callback="vm.uploadProblemFile"
+						remove-callback="vm.removeProblemFile"
+					></single-attachment>
+				</p>
 			</div>
 			<div class="col-12">
 				<p>Tempo limite: {{ vm.problem.current.time_limit }}</p>
@@ -62,7 +75,7 @@
 					</span>
 					<a
 						ng-if="item.validatedTestCases"
-						ng-href="{{ 'contest.problem.solution.run.list' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname }}"
+						ng-href="{{ 'contest.problem.solution.run.view' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname : item.run[ item.run.length-1 ].run_number }}"
 					>{{ item.validatedTestCases }}/{{ list.parent.problem.test_cases.length }}</a>
 				</div>
 				<div class="col-4">
@@ -200,7 +213,7 @@
 					</span>
 					<a
 						ng-if="item.validatedTestCases"
-						ng-href="{{ 'contest.problem.checker.run.list' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname }}"
+						ng-href="{{ 'contest.problem.checker.run.view' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname : item.run[ item.run.length-1 ].run_number }}"
 					>{{ item.validatedTestCases }}/{{ list.parent.problem.test_cases.length }}</a>
 				</div>
 				<div class="col-4">

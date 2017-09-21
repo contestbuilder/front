@@ -13,6 +13,7 @@ function ViewContestController(authService, downloadService, contestService, con
         vm.me      = routeMe;
         vm.contest = routeContest;
 
+        updateListOfProblems(vm.contest.problems);
         updateLastBocaZip(vm.contest.bocaZip);
     };
 
@@ -41,6 +42,7 @@ function ViewContestController(authService, downloadService, contestService, con
             problemService.deleteProblem(vm.contest.nickname, problem.nickname)
             .then(function(contest) {
                 vm.contest = contest;
+                updateListOfProblems(vm.contest.problems);
             });
         };
     };
@@ -66,7 +68,15 @@ function ViewContestController(authService, downloadService, contestService, con
             '?VersionId=' + vm.latestBocaZip.VersionId + 
             '&token=' + authService.getToken();
 
+        // last file edition on the contest
+
         return vm.latestBocaZip;
+    }
+
+    function updateListOfProblems(problems) {
+        return vm.problemsList = problems.filter(function(problem) {
+            return !problem.deleted_at || vm.canI('delete_problem');
+        });
     }
 
     vm.generateZip = function() {

@@ -6,8 +6,8 @@ angular
     .module('front')
     .constant('moment', moment)
     .constant('PromiseProcess', promiseProcess)
-    // .constant('apiUrl', 'http://localhost:3010/api/v1/')
-    .constant('apiUrl', 'http://18.231.43.57/api/v1/')
+    .constant('apiUrl', 'http://localhost:3010/api/v1/')
+    // .constant('apiUrl', 'http://contestbuilder.ddns.net/api/v1/')
     .constant('languages', languages())
     .constant('verdicts', verdicts())
     .constant('frontUrls', frontUrls());

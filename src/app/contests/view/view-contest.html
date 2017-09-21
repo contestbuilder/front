@@ -98,7 +98,7 @@
 		</div>
 
 		<generic-list
-			items="vm.contest.problems"
+			items="vm.problemsList"
 			no-items-message="'Nenhum problema cadastrado.'"
 			headers="[
 				{ label: 'Nome',  class: 'col-8' },
@@ -111,6 +111,7 @@
 					<a 
 						ng-href="{{ 'contest.problem.view' | url : list.parent.contest.nickname : item.nickname }}"
 					>{{ item.name }}</a>
+					<span ng-if="item.deleted_at">(Removido em {{ item.deleted_at | date:'dd/MM/yyyy' }})</span>
 				</div>
 				<div class="col-4" ng-if="list.parent.canI('delete_problem')">
 					<button
@@ -153,14 +154,20 @@
 					type="button"
 					class="btn btn-primary"
 					ng-click="vm.generateZip();"
-				>Gerar zip</button>
+				>
+					<i class="fa fa-file-archive-o" aria-hidden="true"></i>
+					Exportar
+				</button>
 
 				<button
 					ng-if="vm.latestBocaZip"
 					type="button"
 					class="btn btn-primary"
 					ng-click="vm.downloadZip(vm.latestBocaZip.versionId);"
-				>Fazer download</button>
+				>
+					<i class="fa fa-download" aria-hidden="true"></i>
+					Download
+				</button>
 			</div>
 		</div>
 	</div>

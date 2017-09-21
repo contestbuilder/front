@@ -11,7 +11,8 @@
     	'ngAria',
     	'ngRoute',
     	'ui.bootstrap',
-    	'toastr'
+    	'toastr',
+        'ngFileUpload'
     ]);
 
 })();
