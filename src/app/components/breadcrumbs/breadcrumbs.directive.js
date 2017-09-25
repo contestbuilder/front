@@ -79,8 +79,17 @@ function breadcrumbs() {
 
                         // testcase W
                         if(vm.testCase) {
+                            var order;
+                            if(vm.testCase.current) {
+                                order = vm.testCase.current.order;
+                            } else if(Array.isArray(vm.testCase.v)) {
+                                order = vm.testCase.v[ vm.testCase.v.length-1 ].order;
+                            } else {
+                                order = 1;
+                            }
+
                             vm.items.push({
-                                label: '#' + vm.testCase.v[ vm.testCase.v.length-1 ].order + ' caso de teste',
+                                label: '#' + order + ' caso de teste',
                                 url:   $filter('url')('contest.problem.testCase.view', vm.contest.nickname, vm.problem.nickname, vm.testCase._id)
                             });
                         }

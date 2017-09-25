@@ -19,12 +19,38 @@
 		<div class="row">
 			<div class="col-6">
 				<p>Entrada:</p>
-				<pre>{{ vm.test_case.current.input }}</pre>
+				<pre>{{
+					vm.inputLoaded ? 
+					vm.test_case.current.input : 
+					(vm.test_case.current.sample_input + (vm.test_case.current.large_input ? '...' : ''))
+				}}</pre>
+
+				<button
+					ng-if="vm.test_case.current.large_input && !vm.inputLoaded"
+
+					type="button"
+					class="btn btn-link"
+					ng-click="vm.loadMore('input');"
+					ng-disabled="vm.inputLoading"
+				>Carregar entrada completa</button>
 			</div>
 
 			<div class="col-6">
 				<p>Saída:</p>
-				<pre>{{ vm.test_case.current.output }}</pre>
+				<pre>{{
+					vm.outputLoaded ? 
+					vm.test_case.current.output : 
+					(vm.test_case.current.sample_output + (vm.test_case.current.large_output ? '...' : ''))
+				}}</pre>
+
+				<button
+					ng-if="vm.test_case.current.large_output && !vm.outputLoaded"
+
+					type="button"
+					class="btn btn-link"
+					ng-click="vm.loadMore('output');"
+					ng-disabled="vm.outputLoading"
+				>Carregar saída completa</button>
 			</div>
 		</div>
 	</div>

@@ -41,33 +41,21 @@
 						id="test-case-input"
 						placeholder="Entrada" 
 						ng-required="true" 
-						ng-disabled="testCaseNumber['input-file']"
+						ng-disabled="testCaseNumber['inputFile']"
 						ng-trim="false"
 						rows="6"
+						maxlength="500"
 					></textarea>
 
-					<!-- load from file -->
-					<button
-						ng-if="!testCaseNumber['input-file']"
+					<single-attachment
+						file="testCaseNumber['inputFile']"
+						custom-attach-text="'Carregar de arquivo'"
 
-						type="button"
-						ngf-select="vm.loadTestCaseFromFile($index, 'input', $file, $invalidFiles)"
-						accept="'*'"
-						ngf-max-size="1MB"
-
-						class="btn btn-link"
-					>Carregar de arquivo</button>
-
-					<!-- current file -->
-					<span
-						ng-if="testCaseNumber['input-file']"
-					>{{ testCaseNumber['input-file'] }}</span>
-
-					<!-- unnattach file -->
-					<span
-						ng-if="testCaseNumber['input-file']"
-						ng-click="vm.unnattachTestCaseFile($index, 'input');"
-					>x</span>
+						signed-download-callback="vm.getSignedDownloadCallback($index, 'input')"
+						signed-upload-callback="vm.getSignedUploadCallback($index, 'input', file)"
+						after-upload-callback="vm.afterUploadCallback($index, 'input', file)"
+						remove-callback="vm.removeCallback($index, 'input')"
+					></single-attachment>
 				</div>
 			</div>
 
@@ -82,33 +70,21 @@
 						id="test-case-output"
 						placeholder="Saída" 
 						ng-required="true" 
-						ng-disabled="testCaseNumber['output-file']"
+						ng-disabled="testCaseNumber['outputFile']"
 						ng-trim="false"
 						rows="6"
+						maxlength="500"
 					></textarea>
 
-					<!-- load from file -->
-					<button
-						ng-if="!testCaseNumber['output-file']"
+					<single-attachment
+						file="testCaseNumber['outputFile']"
+						custom-attach-text="'Carregar de arquivo'"
 
-						type="button"
-						ngf-select="vm.loadTestCaseFromFile($index, 'output', $file, $invalidFiles)"
-						accept="'*'"
-						ngf-max-size="1MB"
-
-						class="btn btn-link"
-					>Carregar de arquivo</button>
-
-					<!-- current file -->
-					<span
-						ng-if="testCaseNumber['output-file']"
-					>{{ testCaseNumber['output-file'] }}</span>
-
-					<!-- unnattach file -->
-					<span
-						ng-if="testCaseNumber['output-file']"
-						ng-click="vm.unnattachTestCaseFile($index, 'output');"
-					>x</span>
+						signed-download-callback="vm.getSignedDownloadCallback($index, 'output')"
+						signed-upload-callback="vm.getSignedUploadCallback($index, 'output', file)"
+						after-upload-callback="vm.afterUploadCallback($index, 'output', file)"
+						remove-callback="vm.removeCallback($index, 'output')"
+					></single-attachment>
 				</div>
 			</div>
 		</div>
@@ -123,6 +99,12 @@
 			</div>
 		</div>
 
+		<div class="row" ng-if="vm.currentUploadingCount">
+			<div class="col-12">
+				<p>Aguardando upload de {{ vm.currentUploadingCount }} arquivo(s).</p>
+			</div>
+		</div>
+
 		<div class="row">
 			<div class="col-12">
 				<a
@@ -133,7 +115,7 @@
 				<button 
 					type="submit" 
 					class="btn btn-primary"
-					ng-disabled="testCaseForm.$invalid"
+					ng-disabled="testCaseForm.$invalid || vm.currentUploadingCount"
 				>Salvar</button>
 			</div>
 		</div>

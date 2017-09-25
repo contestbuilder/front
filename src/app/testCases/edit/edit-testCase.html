@@ -27,9 +27,21 @@
 						id="test-case-input"
 						placeholder="Entrada" 
 						ng-required="true" 
+						ng-disabled="vm.form.inputFile"
 						ng-trim="false"
 						rows="6"
+						maxlength="500"
 					></textarea>
+
+					<single-attachment
+						file="vm.form.inputFile"
+						custom-attach-text="'Carregar de arquivo'"
+
+						signed-download-callback="vm.getSignedDownloadCallback('input')"
+						signed-upload-callback="vm.getSignedUploadCallback('input', file)"
+						after-upload-callback="vm.afterUploadCallback('input', file)"
+						remove-callback="vm.removeCallback('input')"
+					></single-attachment>
 				</div>
 			</div>
 
@@ -43,10 +55,28 @@
 						id="test-case-output"
 						placeholder="Saída" 
 						ng-required="true" 
+						ng-disabled="vm.form.outputFile"
 						ng-trim="false"
 						rows="6"
+						maxlength="500"
 					></textarea>
+
+					<single-attachment
+						file="vm.form.outputFile"
+						custom-attach-text="'Carregar de arquivo'"
+
+						signed-download-callback="vm.getSignedDownloadCallback('output')"
+						signed-upload-callback="vm.getSignedUploadCallback('output', file)"
+						after-upload-callback="vm.afterUploadCallback('output', file)"
+						remove-callback="vm.removeCallback('output')"
+					></single-attachment>
 				</div>
+			</div>
+		</div>
+
+		<div class="row" ng-if="vm.currentUploadingCount">
+			<div class="col-12">
+				<p>Aguardando upload de {{ vm.currentUploadingCount }} arquivo(s).</p>
 			</div>
 		</div>
 
@@ -60,7 +90,7 @@
 				<button 
 					type="submit" 
 					class="btn btn-primary"
-					ng-disabled="testCaseForm.$invalid"
+					ng-disabled="testCaseForm.$invalid || vm.currentUploadingCount"
 				>Salvar</button>
 			</div>
 		</div>

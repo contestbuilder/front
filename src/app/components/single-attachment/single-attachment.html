@@ -7,7 +7,7 @@
 	ngf-max-size="4MB"
 
 	class="btn btn-link"
->Adicionar arquivo</button>
+>{{ vm.customAttachText ? vm.customAttachText : 'Adicionar arquivo' }}</button>
 
 <button
 	ng-if="vm.file"

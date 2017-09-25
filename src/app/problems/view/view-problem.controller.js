@@ -118,7 +118,8 @@ function ViewProblemController($routeParams, downloadService, routeContest, rout
     vm.deleteTestCase = function(test_case) {
         return function() {
             testCaseService.deleteTestCase(vm.contest_nickname, vm.problem_nickname, test_case._id)
-            .then(function(contest) {
+            .then(function(success) {
+                return;
                 vm.contest = contest;
                 vm.problem = vm.contest.problems.filter(function(problem) {
                     return problem.nickname == vm.problem_nickname;
@@ -144,20 +145,20 @@ function ViewProblemController($routeParams, downloadService, routeContest, rout
         return problemService.downloadProblemFile(vm.contest.nickname, vm.problem.nickname);
     };
 
+    vm.getSignedUploadUrl = function(file) {
+        return problemService.getUploadProblemFileSignedUrl(vm.contest.nickname, vm.problem.nickname, {
+            name: file.name
+        });
+    };
+
+    vm.uploadProblemFile = function(file) {
+        return problemService.uploadProblemFile(vm.contest.nickname, vm.problem.nickname, {
+            name: file.name
+        });
+    };
+
     vm.removeProblemFile = function() {
         return problemService.deleteProblemFile(vm.contest.nickname, vm.problem.nickname);
-    };
-
-    vm.getSignedUploadUrl = function(fileName) {
-        return problemService.getUploadProblemFileSignedUrl(vm.contest.nickname, vm.problem.nickname, {
-            name: fileName
-        });
-    };
-
-    vm.uploadProblemFile = function(fileName) {
-        return problemService.uploadProblemFile(vm.contest.nickname, vm.problem.nickname, {
-            name: fileName
-        });
     };
 
 

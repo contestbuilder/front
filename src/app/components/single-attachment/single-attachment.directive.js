@@ -14,11 +14,14 @@ function singleAttachment() {
             // the file object (must have a name property).
             file: '<',
 
+            // text to show on 'attach' button.
+            customAttachText: '<',
+
             // callbacks
-            signedDownloadCallback: '<',
-            signedUploadCallback:   '<',
-            afterUploadCallback:    '<',
-            removeCallback:         '<'
+            signedDownloadCallback: '&',
+            signedUploadCallback:   '&',
+            afterUploadCallback:    '&',
+            removeCallback:         '&'
         },
         controller      : SingleAttachmentController,
         controllerAs    : 'vm',
@@ -42,7 +45,7 @@ function singleAttachment() {
                 .then(function(signedUrl) {
                     vm.loading = false;
 
-                    downloadService.download(signedUrl);
+                    downloadService.download(signedUrl, false, vm.file.name);
                 })
                 .catch(function(err) {
                     vm.loading = false;
@@ -84,7 +87,7 @@ function singleAttachment() {
             var fileName = file.name;
 
             vm.loading = true;
-            vm.signedUploadCallback(fileName)
+            vm.signedUploadCallback({ file: file })
                 .then(function(signedUrl) {
                     return new Promise(function(resolve, reject) {
                         Upload.upload({
@@ -113,7 +116,7 @@ function singleAttachment() {
                     });
                 })
                 .then(function(result) {
-                    return vm.afterUploadCallback(fileName);
+                    return vm.afterUploadCallback({ file: file });
                 })
                 .then(function(response) {
                     vm.loading = false;

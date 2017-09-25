@@ -9,12 +9,12 @@ angular
 function downloadService($document) {
     var service = this;
 
-    service.download = function(url, popupWindow) {
+    service.download = function(url, popupWindow, filename) {
 		var body = $document.find('body').eq(0);
 		var link = angular.element(
 			'<a ' +
 			'id="temp_link" ' +
-			'download ' +
+			(filename ? 'download="' + filename + '" ' : 'download ') +
 			'href="' + url + '" ' +
 			'style="display: none;" ' +
 			(popupWindow ? 'target="_blank" ' : '') +
