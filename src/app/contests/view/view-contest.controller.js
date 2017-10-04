@@ -76,6 +76,8 @@ function ViewContestController(authService, downloadService, contestService, con
     function updateListOfProblems(problems) {
         return vm.problemsList = problems.filter(function(problem) {
             return !problem.deleted_at || vm.canI('delete_problem');
+        }).sort(function(a, b) {
+            return a.current.order - b.current.order;
         });
     }
 
@@ -104,6 +106,10 @@ function ViewContestController(authService, downloadService, contestService, con
             .catch(function(err) {
                 console.log(err);
             });
+    };
+
+    vm.getProblemLetter = function(order) {
+        return String.fromCharCode(64 + order);
     };
 
     vm.init();
