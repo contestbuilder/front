@@ -12,7 +12,8 @@
     	'ngRoute',
     	'ui.bootstrap',
     	'toastr',
-        'ngFileUpload'
+        'ngFileUpload',
+        'angular-loading-bar'
     ]);
 
 })();
