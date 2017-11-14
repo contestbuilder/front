@@ -1,0 +1,26 @@
+<button
+	ng-if="!vm.file"
+
+	type="button"
+	ngf-select="vm.loadFile($file, $invalidFiles)"
+	accept="'*'"
+	ngf-max-size="4MB"
+
+	class="btn btn-link"
+>{{ vm.customAttachText ? vm.customAttachText : 'Adicionar arquivo' }}</button>
+
+<span
+	ng-if="vm.file"
+>{{ vm.file.name }}</span>
+
+<span
+	ng-if="vm.file"
+	ng-click="vm.removeFile();"
+>x</span>
+
+<img 
+	ng-if="vm.loading"
+	src="assets/images/loading.gif"
+/>
+
+<p ng-if="vm.err">{{ vm.err }}</p>

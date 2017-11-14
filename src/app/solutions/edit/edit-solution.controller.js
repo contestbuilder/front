@@ -40,6 +40,20 @@ function EditSolutionController($location, $filter, languages, solutionService, 
         });
     };
 
+
+    vm.loadCallback = function(err, content) {
+        if(err) {
+            return;
+        }
+
+        vm.form.source_code = content;
+    };
+
+    vm.removeCallback = function() {
+        delete vm.form.file;
+        vm.form.source_code = '';
+    };
+
     vm.init();
     return vm;
 }

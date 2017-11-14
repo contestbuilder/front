@@ -17,6 +17,8 @@ function CreateSolutionController($location, $filter, $routeParams, languages, s
         vm.problem_nickname = $routeParams.problem_nickname;
 
         vm.languages = languages;
+
+        vm.form = {};
     };
 
     vm.submit = function(form) {
@@ -32,6 +34,20 @@ function CreateSolutionController($location, $filter, $routeParams, languages, s
                 solution.nickname
             ));
         });
+    };
+
+
+    vm.loadCallback = function(err, content) {
+        if(err) {
+            return;
+        }
+
+        vm.form.source_code = content;
+    };
+
+    vm.removeCallback = function() {
+        delete vm.form.file;
+        vm.form.source_code = '';
     };
 
     vm.init();

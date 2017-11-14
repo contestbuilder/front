@@ -30,6 +30,14 @@
 						ng-required="true" 
 						rows="10"
 					></textarea>
+
+					<file-loader
+						file="vm.form.file"
+						custom-attach-text="'Carregar de arquivo'"
+
+						load-callback="vm.loadCallback(err, content)"
+						remove-callback="vm.removeCallback()"
+					></file-loader>
 				</div>
 
 				<div class="form-group">
