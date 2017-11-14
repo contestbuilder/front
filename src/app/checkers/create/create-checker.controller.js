@@ -17,6 +17,7 @@ function CreateCheckerController($location, $filter, $routeParams, languages, ch
         vm.problem_nickname = $routeParams.problem_nickname;
 
         vm.languages = languages;
+        vm.form = {};
     };
 
     vm.submit = function(form) {
@@ -32,6 +33,20 @@ function CreateCheckerController($location, $filter, $routeParams, languages, ch
                 checker.nickname
             ));
         });
+    };
+
+
+    vm.loadCallback = function(err, content) {
+        if(err) {
+            return;
+        }
+
+        vm.form.source_code = content;
+    };
+
+    vm.removeCallback = function() {
+        delete vm.form.file;
+        vm.form.source_code = '';
     };
 
     vm.init();
