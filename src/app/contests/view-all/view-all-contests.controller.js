@@ -6,16 +6,24 @@ angular
     .controller('ViewAllContestsController', ViewAllContestsController);
 
 /** @ngInject */
-function ViewAllContestsController(contestService, routeMe) {
+function ViewAllContestsController(graphqlService, routeMe) {
     var vm = this;
 
     vm.init = function() {
         vm.me = routeMe;
         vm.contestList = [];
 
-        contestService.getContests(vm.me.permissions && vm.me.permissions.delete_contest)
-        .then(function(contests) {
-            vm.contestList = contests;
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true,
+                author: {
+                    username: true
+                },
+                created_at: true
+            }
+        }).then(function(data) {
+            vm.contestList = data.contest;
         });
     };
 

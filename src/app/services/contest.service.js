@@ -6,13 +6,14 @@ angular
     .service('contestService', contestService);
 
 /** @ngInject */
-function contestService($http, apiUrl) {
+function contestService($http, apiUrl, graphqlService) {
     var service = this;
 
-    service.getContests = function(show_deleted) {
-        return $http.get(apiUrl + 'contest' + (show_deleted ? '?deleted=true' : ''))
-        .then(function(result) {
-        	return result.data.contests;
+    service.getContests = function(fields) {
+        return $http.post(apiUrl + 'graphql', graphqlService.buildQuery({
+            contest: fields
+        })).then(function(result) {
+            return result.data.data.contest;
         });
     };
 
