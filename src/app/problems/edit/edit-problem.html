@@ -1,6 +1,8 @@
 <navbar></navbar>
 
 <breadcrumbs
+	ng-if="!vm.loading"
+
 	contests="true"
 	contest="vm.contest"
 	problem="vm.problem"
@@ -61,7 +63,7 @@
 				<button 
 					type="submit" 
 					class="btn btn-primary"
-					ng-disabled="problemForm.$invalid"
+					ng-disabled="problemForm.$invalid && !vm.loading"
 				>Salvar</button>
 			</form>
 		</div>

@@ -6,12 +6,25 @@ angular
     .controller('CreateProblemController', CreateProblemController);
 
 /** @ngInject */
-function CreateProblemController($location, $filter, $routeParams, problemService, routeContest) {
+function CreateProblemController($location, $filter, $routeParams, problemService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = routeContest;
-        vm.contest_nickname = $routeParams.contest_nickname;
+        vm.contest = {};
+        vm.loading = true;
+
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true
+            }
+        }, {
+            contest_nickname: $routeParams.contest_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+
+            vm.loading = false;
+        });
 
         fillDefaultValues();
     };
@@ -22,14 +35,14 @@ function CreateProblemController($location, $filter, $routeParams, problemServic
     }
 
     vm.submit = function(form) {
-        problemService.createProblem(vm.contest_nickname, {
+        problemService.createProblem(vm.contest.nickname, {
             name:        form.name,
             description: form.description,
             time_limit:  form.time_limit
         }).then(function(problem) {
             $location.path($filter('url')(
                 'contest.problem.view',
-                vm.contest_nickname,
+                vm.contest.nickname,
                 problem.nickname
             ));
         });

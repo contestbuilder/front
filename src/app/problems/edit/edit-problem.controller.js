@@ -6,22 +6,44 @@ angular
     .controller('EditProblemController', EditProblemController);
 
 /** @ngInject */
-function EditProblemController($location, $filter, problemService, routeContest, routeProblem) {
+function EditProblemController($routeParams, $location, $filter, problemService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = routeContest;
-        vm.problem = routeProblem;
-        vm.lastVersion = vm.problem.v[ vm.problem.v.length-1 ];
+        vm.contest = {};
+        vm.problem = {};
+        vm.loading = true;
 
-        fillInitialValues();
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true
+            },
+
+            problem: {
+                name:        true,
+                nickname:    true,
+                description: true,
+                time_limit:  true
+            }
+        }, {
+            contest_nickname: $routeParams.contest_nickname,
+            problem_nickname: $routeParams.problem_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+            vm.problem = data.problem[0];
+
+            fillInitialValues();
+
+            vm.loading = false;
+        });
     };
 
     function fillInitialValues() {
         vm.form = {
             name:        vm.problem.name,
-            description: vm.lastVersion.description,
-            time_limit:  vm.lastVersion.time_limit
+            description: vm.problem.description,
+            time_limit:  vm.problem.time_limit
         };
     }
 

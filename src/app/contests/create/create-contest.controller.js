@@ -18,7 +18,8 @@ function CreateContestController($location, $filter, contestService, routeMe) {
             name: vm.form.name
         }).then(function(contest) {
             $location.path($filter('url')(
-                'contest.list'
+                'contest.view',
+                contest.nickname
             ));
         });
     };

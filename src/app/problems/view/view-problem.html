@@ -1,6 +1,8 @@
 <navbar></navbar>
 
 <breadcrumbs
+	ng-if="!vm.loading"
+
 	contests="true"
 	contest="vm.contest"
 	problem="vm.problem"
@@ -17,7 +19,7 @@
 		<!-- info -->
 		<div class="row">
 			<div class="col-12">
-				<p>Descrição curta: {{ vm.problem.current.description }}</p>
+				<p>Descrição curta: {{ vm.problem.description }}</p>
 			</div>
 			<div class="col-12">
 				<p>
@@ -33,7 +35,7 @@
 				</p>
 			</div>
 			<div class="col-12">
-				<p>Tempo limite: {{ vm.problem.current.time_limit }}</p>
+				<p>Tempo limite: {{ vm.problem.time_limit }}</p>
 			</div>
 		</div>
 	</div>

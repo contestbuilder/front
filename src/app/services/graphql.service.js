@@ -9,16 +9,17 @@ angular
 function graphqlService($http, apiUrl) {
     var service = this;
 
-    service.get = function(obj) {
-        return $http.post(apiUrl + 'graphql', service.buildQuery(obj))
+    service.get = function(obj, variables) {
+        return $http.post(apiUrl + 'graphql', service.buildQuery(obj, variables))
         .then(function(result) {
             return result.data.data;
         });
     };
 
-    service.buildQuery = function(obj) {
+    service.buildQuery = function(obj, variables) {
         return {
-            query: recursivelyBuildQuery(obj)
+            query:     recursivelyBuildQuery(obj),
+            variables: variables || {}
         };
     };
 

@@ -6,19 +6,47 @@ angular
     .controller('ViewProblemController', ViewProblemController);
 
 /** @ngInject */
-function ViewProblemController($routeParams, downloadService, routeContest, routeProblem, problemService, solutionService, checkerService, testCaseService, runService) {
+function ViewProblemController($routeParams, downloadService, graphqlService, problemService, solutionService, checkerService, testCaseService, runService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = routeContest;
-        vm.problem = routeProblem;
+        vm.contest = {};
+        vm.problem = {};
+        vm.loading = true;
+
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true
+            },
+
+            problem: {
+                name:        true,
+                nickname:    true,
+                description: true,
+                file_url:    true,
+                time_limit:  true,
+                deleted_at:  true
+
+                // checkers
+                // solutions
+                // test_cases
+            }
+        }, {
+            contest_nickname: $routeParams.contest_nickname,
+            problem_nickname: $routeParams.problem_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+            vm.problem = data.problem[0];
+
+            getValidatedTestCases(vm.problem, []);//vm.problem.solutions);
+            getValidatedTestCases(vm.problem, []);//vm.problem.checkers);
+
+            vm.loading = false;
+        });
+
         vm.contest_nickname = $routeParams.contest_nickname;
         vm.problem_nickname = $routeParams.problem_nickname;
-
-        vm.problem.current = vm.problem.v[vm.problem.v.length-1];
-
-        getValidatedTestCases(vm.problem, vm.problem.solutions);
-        getValidatedTestCases(vm.problem, vm.problem.checkers);
     };
 
     vm.deleteSolution = function(solution) {

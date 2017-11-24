@@ -1,6 +1,8 @@
 <navbar></navbar>
 
 <breadcrumbs
+	ng-if="!vm.loading"
+
 	contests="true"
 	contest="vm.contest"
 	new="'o problema'"
@@ -36,6 +38,8 @@
 						class="form-control"
 						id="problem-description"
 						placeholder="Descrição"
+						rows="6"
+						maxlength="1028"
 						ng-required="true"
 					></textarea>
 				</div>
@@ -55,12 +59,12 @@
 				<a
 					role="button"
 					class="btn btn-secondary"
-					ng-href="{{ 'contest.view' | url : vm.contest_nickname }}"
+					ng-href="{{ 'contest.view' | url : vm.contest.nickname }}"
 				>Cancelar</a>
 				<button 
 					type="submit" 
 					class="btn btn-primary"
-					ng-disabled="problemForm.$invalid"
+					ng-disabled="problemForm.$invalid || vm.loading"
 				>Salvar</button>
 			</form>
 		</div>

@@ -6,15 +6,48 @@ angular
     .controller('ViewContestController', ViewContestController);
 
 /** @ngInject */
-function ViewContestController(authService, downloadService, contestService, contributorService, problemService, routeMe, routeContest) {
+function ViewContestController($routeParams, authService, downloadService, contestService, contributorService, problemService, graphqlService, routeMe) {
     var vm = this;
 
     vm.init = function() {
         vm.me      = routeMe;
-        vm.contest = routeContest;
+        vm.contest = {};
+        vm.loading = true;
 
-        updateListOfProblems(vm.contest.problems);
-        updateLastBocaZip(vm.contest.bocaZip);
+        graphqlService.get({
+            contest: {
+                name:       true,
+                nickname:   true,
+                deleted_at: true,
+                created_at: true,
+
+                author: {
+                    name:     true,
+                    username: true
+                },
+
+                problems: {
+                    name:       true,
+                    nickname:   true,
+                    deleted_at: true,
+                    order:      true
+                },
+
+                contributors: {
+                    name:     true,
+                    username: true
+                }
+            }
+        }, {
+            contest_nickname: $routeParams.contest_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+
+            updateListOfProblems(vm.contest.problems);
+            updateLastBocaZip(vm.contest.bocaZip);
+
+            vm.loading = false;
+        });
     };
 
     vm.canI = function(action, obj) {
@@ -74,11 +107,12 @@ function ViewContestController(authService, downloadService, contestService, con
     }
 
     function updateListOfProblems(problems) {
-        return vm.problemsList = problems.filter(function(problem) {
+        vm.problemsList = problems.filter(function(problem) {
             return !problem.deleted_at || vm.canI('delete_problem');
         }).sort(function(a, b) {
-            return a.current.order - b.current.order;
+            return a.order - b.order;
         });
+        return vm.problemsList;
     }
 
     vm.generateZip = function() {

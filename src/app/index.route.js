@@ -86,19 +86,18 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
         }
     })
     .when(frontUrls.urls.contest.view, {
-        templateUrl : 'app/contests/view/view-contest.html',
-        controller  : 'ViewContestController',
+        templateUrl:  'app/contests/view/view-contest.html',
+        controller:   'ViewContestController',
         controllerAs: 'vm',
-        resolve     : {
-            routeMe:      getMe,
-            routeContest: getContest
+        resolve: {
+            routeMe: getMe
         }
     })
     .when(frontUrls.urls.contest.list, {
-        templateUrl : 'app/contests/view-all/view-all-contests.html',
-        controller  : 'ViewAllContestsController',
+        templateUrl:  'app/contests/view-all/view-all-contests.html',
+        controller:   'ViewAllContestsController',
         controllerAs: 'vm',
-        resolve     : {
+        resolve: {
             routeMe: getMe
         }
     })
@@ -117,29 +116,24 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
     /* problems */
     .when(frontUrls.urls.contest.problem.new, {
-        templateUrl : 'app/problems/create/create-problem.html',
-        controller  : 'CreateProblemController',
+        templateUrl:  'app/problems/create/create-problem.html',
+        controller:   'CreateProblemController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.view, {
-        templateUrl : 'app/problems/view/view-problem.html',
-        controller  : 'ViewProblemController',
+        templateUrl:  'app/problems/view/view-problem.html',
+        controller:   'ViewProblemController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.edit, {
-        templateUrl : 'app/problems/edit/edit-problem.html',
-        controller  : 'EditProblemController',
+        templateUrl:  'app/problems/edit/edit-problem.html',
+        controller:   'EditProblemController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
+        resolve: {
         }
     })
 
