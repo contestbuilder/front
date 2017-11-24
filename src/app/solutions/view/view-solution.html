@@ -1,6 +1,8 @@
 <navbar></navbar>
 
 <breadcrumbs
+	ng-if="!vm.loading"
+
 	contests="true"
 	contest="vm.contest"
 	problem="vm.problem"
@@ -18,14 +20,14 @@
 		<!-- info -->
 		<div class="row">
 			<div class="col-12">
-				<p>Linguagem: {{ vm.solution.current.language.label }}</p>
+				<p>Linguagem: {{ vm.solution.language.label }}</p>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-12">
 				<p>Código fonte:</p>
-				<pre>{{ vm.solution.current.source_code }}</pre>
+				<pre>{{ vm.solution.source_code }}</pre>
 			</div>
 		</div>
 	</div>

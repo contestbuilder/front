@@ -78,8 +78,8 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
     /* contests */
     .when(frontUrls.urls.contest.new, {
-        templateUrl : 'app/contests/create/create-contest.html',
-        controller  : 'CreateContestController',
+        templateUrl:  'app/contests/create/create-contest.html',
+        controller:   'CreateContestController',
         controllerAs: 'vm',
         resolve     : {
             routeMe: getMe
@@ -140,32 +140,24 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
     /* solutions */
     .when(frontUrls.urls.contest.problem.solution.new, {
-        templateUrl : 'app/solutions/create/create-solution.html',
-        controller  : 'CreateSolutionController',
+        templateUrl:  'app/solutions/create/create-solution.html',
+        controller:   'CreateSolutionController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.solution.view, {
-        templateUrl : 'app/solutions/view/view-solution.html',
-        controller  : 'ViewSolutionController',
+        templateUrl:  'app/solutions/view/view-solution.html',
+        controller:   'ViewSolutionController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest:  getContest,
-            routeProblem:  getProblem,
-            routeSolution: getSolution
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.solution.edit, {
-        templateUrl : 'app/solutions/edit/edit-solution.html',
-        controller  : 'EditSolutionController',
+        templateUrl:  'app/solutions/edit/edit-solution.html',
+        controller:   'EditSolutionController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest:  getContest,
-            routeProblem:  getProblem,
-            routeSolution: getSolution
+        resolve: {
         }
     })
 

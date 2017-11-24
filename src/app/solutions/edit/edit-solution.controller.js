@@ -6,23 +6,53 @@ angular
     .controller('EditSolutionController', EditSolutionController);
 
 /** @ngInject */
-function EditSolutionController($location, $filter, languages, solutionService, routeContest, routeProblem, routeSolution) {
+function EditSolutionController($routeParams, $location, $filter, languages, solutionService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = routeContest;
-        vm.problem = routeProblem;
-        vm.solution = routeSolution;
-        vm.solution.current = vm.solution.v[ vm.solution.v.length-1 ];
+        vm.contest = {};
+        vm.problem = {};
+        vm.solution = {};
+        vm.loading = true;
+
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true
+            },
+
+            problem: {
+                name:     true,
+                nickname: true
+            },
+
+            solution: {
+                name:        true,
+                nickname:    true,
+                source_code: true,
+                language:    true
+            }
+        }, {
+            contest_nickname:  $routeParams.contest_nickname,
+            problem_nickname:  $routeParams.problem_nickname,
+            solution_nickname: $routeParams.solution_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+            vm.problem = data.problem[0];
+            vm.solution = data.solution[0];
+
+            fillInitialValues();
+
+            vm.loading = false;
+        });
 
         vm.languages = languages;
-        fillInitialValues();
     };
 
     function fillInitialValues() {
         vm.form = {
-            source_code: vm.solution.current.source_code,
-            language:    vm.solution.current.language
+            source_code: vm.solution.source_code,
+            language:    vm.solution.language
         };
     }
 

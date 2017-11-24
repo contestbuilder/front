@@ -26,7 +26,12 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
                 description: true,
                 file_url:    true,
                 time_limit:  true,
-                deleted_at:  true
+                deleted_at:  true,
+
+                solutions: {
+                    name:     true,
+                    nickname: true
+                }
 
                 // checkers
                 // solutions

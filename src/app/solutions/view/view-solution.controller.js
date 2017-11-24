@@ -6,19 +6,45 @@ angular
     .controller('ViewSolutionController', ViewSolutionController);
 
 /** @ngInject */
-function ViewSolutionController($routeParams, utilService, routeContest, routeProblem, routeSolution) {
+function ViewSolutionController($routeParams, utilService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = routeContest;
-        vm.problem = routeProblem;
-        vm.solution = routeSolution;
-        vm.contest_nickname = $routeParams.contest_nickname;
-        vm.problem_nickname = $routeParams.problem_nickname;
-        vm.solution_nickname = $routeParams.solution_nickname;
+        vm.contest = {};
+        vm.problem = {};
+        vm.solution = {};
+        vm.loading = true;
 
-        vm.solution.current = vm.solution.v[vm.solution.v.length-1];
-        vm.solution.current.language = utilService.getLanguage(vm.solution.current.language);
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true
+            },
+
+            problem: {
+                name:     true,
+                nickname: true
+            },
+
+            solution: {
+                name:        true,
+                nickname:    true,
+                language:    true,
+                source_code: true
+            }
+        }, {
+            contest_nickname:  $routeParams.contest_nickname,
+            problem_nickname:  $routeParams.problem_nickname,
+            solution_nickname: $routeParams.solution_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+            vm.problem = data.problem[0];
+            vm.solution = data.solution[0];
+
+            vm.solution.language = utilService.getLanguage(vm.solution.language);
+
+            vm.loading = false;
+        });
     };
 
     vm.init();
