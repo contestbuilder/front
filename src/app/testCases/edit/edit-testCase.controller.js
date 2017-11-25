@@ -6,35 +6,62 @@ angular
     .controller('EditTestCaseController', EditTestCaseController);
 
 /** @ngInject */
-function EditTestCaseController($scope, $location, $filter, routeContest, routeProblem, routeTestCase, testCaseService) {
+function EditTestCaseController($scope, $location, $filter, graphqlService, testCaseService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest  = routeContest;
-        vm.problem  = routeProblem;
-        vm.testCase = routeTestCase;
+        vm.contest = {};
+        vm.problem = {};
+        vm.testCase = {};
+        vm.loading = true;
 
-        fillInitialValues();
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true
+            },
+
+            problem: {
+                name:     true,
+                nickname: true
+            },
+
+            test_case: {
+                id:     true,
+                input:  true,
+                output: true,
+                order:  true
+            }
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+            vm.problem = data.problem[0];
+            vm.testCase = data.test_case[0];
+
+            fillInitialValues();
+
+            vm.loading = false;
+        });
+
 
         vm.currentUploadingCount = 0;
     };
 
     function fillInitialValues() {
         vm.form = {
-            input:  vm.testCase.current.sample_input + (vm.testCase.current.large_input ? '...' : ''),
-            output: vm.testCase.current.sample_output + (vm.testCase.current.large_output ? '...' : '')
+            input:  vm.testCase.input,
+            output: vm.testCase.output
         };
 
-        if(vm.testCase.current.input_file_name) {
+        if(vm.testCase.input_file) {
             vm.form.inputFile = {
                 original: true,
-                name:     vm.testCase.current.input_file_name
+                name:     vm.testCase.input_file
             };
         }
-        if(vm.testCase.current.output_file_name) {
+        if(vm.testCase.output_file) {
             vm.form.outputFile = {
                 original: true,
-                name:     vm.testCase.current.output_file_name
+                name:     vm.testCase.output_file
             };
         }
     }
@@ -44,9 +71,9 @@ function EditTestCaseController($scope, $location, $filter, routeContest, routeP
 
         if(form.inputFile) {
             if(form.inputSignedUrl) {
-                params.input_file_name = form.inputSignedUrl.file_name;
+                params.input_file = form.inputSignedUrl.file_name;
             } else {
-                params.input_file_name = form.inputFile.name;
+                params.input_file = form.inputFile.name;
             }
         } else {
             params.input = form.input;
@@ -54,21 +81,21 @@ function EditTestCaseController($scope, $location, $filter, routeContest, routeP
 
         if(form.outputFile) {
             if(form.outputSignedUrl) {
-                params.output_file_name = form.outputSignedUrl.file_name;
+                params.output_file = form.outputSignedUrl.file_name;
             } else {
-                params.output_file_name = form.outputFile.name;
+                params.output_file = form.outputFile.name;
             }
         } else {
             params.output = form.output;
         }
 
-        testCaseService.editTestCase(vm.contest.nickname, vm.problem.nickname, vm.testCase._id, params)
+        testCaseService.editTestCase(vm.contest.nickname, vm.problem.nickname, vm.testCase.id, params)
         .then(function(test_case) {
             $location.path($filter('url')(
                 'contest.problem.testCase.view', 
                 vm.contest.nickname, 
                 vm.problem.nickname, 
-                test_case._id
+                test_case.id
             ));
         });
     };
@@ -82,8 +109,8 @@ function EditTestCaseController($scope, $location, $filter, routeContest, routeP
         var fileReader = new FileReader();
         fileReader.onload = function(evt) {
             $scope.$apply(function () {
-                if(fileReader.result.length > 500) {
-                    vm.form[fileType] = fileReader.result.substr(0, 497) + '...';
+                if(fileReader.result.length > 1024) {
+                    vm.form[fileType] = fileReader.result.substr(0, 1021) + '...';
                 } else {
                     vm.form[fileType] = fileReader.result;
                 }

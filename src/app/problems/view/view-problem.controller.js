@@ -31,10 +31,13 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
                 solutions: {
                     name:     true,
                     nickname: true
+                },
+
+                test_cases: {
+                    id: true
                 }
 
                 // checkers
-                // test_cases
             }
         }, {
             contest_nickname: $routeParams.contest_nickname,
@@ -149,7 +152,7 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
 
     vm.deleteTestCase = function(test_case) {
         return function() {
-            testCaseService.deleteTestCase(vm.contest_nickname, vm.problem_nickname, test_case._id)
+            testCaseService.deleteTestCase(vm.contest_nickname, vm.problem_nickname, test_case.id)
             .then(function(success) {
                 return;
                 vm.contest = contest;

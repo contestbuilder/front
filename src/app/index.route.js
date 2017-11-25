@@ -195,32 +195,24 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
     /* test cases */
     .when(frontUrls.urls.contest.problem.testCase.new, {
-        templateUrl : 'app/testCases/create/create-testCase.html',
-        controller  : 'CreateTestCaseController',
+        templateUrl:  'app/testCases/create/create-testCase.html',
+        controller:   'CreateTestCaseController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.testCase.view, {
-        templateUrl : 'app/testCases/view/view-testCase.html',
-        controller  : 'ViewTestCaseController',
+        templateUrl:  'app/testCases/view/view-testCase.html',
+        controller:   'ViewTestCaseController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest : getContest,
-            routeProblem : getProblem,
-            routeTestCase: getTestCase
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.testCase.edit, {
-        templateUrl : 'app/testCases/edit/edit-testCase.html',
-        controller  : 'EditTestCaseController',
+        templateUrl:  'app/testCases/edit/edit-testCase.html',
+        controller:   'EditTestCaseController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest : getContest,
-            routeProblem : getProblem,
-            routeTestCase: getTestCase
+        resolve: {
         }
     })
 

@@ -1,6 +1,8 @@
 <navbar></navbar>
 
 <breadcrumbs
+	ng-if="!vm.loading"
+
 	contests="true"
 	contest="vm.contest"
 	problem="vm.problem"
@@ -11,7 +13,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<h2 class="page-title">#{{ vm.test_case.current.order }} caso de teste</h2>
+				<h2 class="page-title">#{{ vm.test_case.order }} caso de teste</h2>
 			</div>
 		</div>
 
@@ -19,38 +21,30 @@
 		<div class="row">
 			<div class="col-6">
 				<p>Entrada:</p>
-				<pre>{{
-					vm.inputLoaded ? 
-					vm.test_case.current.input : 
-					(vm.test_case.current.sample_input + (vm.test_case.current.large_input ? '...' : ''))
-				}}</pre>
+				<pre>{{ vm.test_case.input }}</pre>
 
-				<button
-					ng-if="vm.test_case.current.large_input && !vm.inputLoaded"
+				<!-- <button
+					ng-if="vm.test_case.large_input && !vm.inputLoaded"
 
 					type="button"
 					class="btn btn-link"
 					ng-click="vm.loadMore('input');"
 					ng-disabled="vm.inputLoading"
-				>Carregar entrada completa</button>
+				>Carregar entrada completa</button> -->
 			</div>
 
 			<div class="col-6">
 				<p>Saída:</p>
-				<pre>{{
-					vm.outputLoaded ? 
-					vm.test_case.current.output : 
-					(vm.test_case.current.sample_output + (vm.test_case.current.large_output ? '...' : ''))
-				}}</pre>
+				<pre>{{ vm.test_case.output }}</pre>
 
-				<button
-					ng-if="vm.test_case.current.large_output && !vm.outputLoaded"
+				<!-- <button
+					ng-if="vm.test_case.large_output && !vm.outputLoaded"
 
 					type="button"
 					class="btn btn-link"
 					ng-click="vm.loadMore('output');"
 					ng-disabled="vm.outputLoading"
-				>Carregar saída completa</button>
+				>Carregar saída completa</button> -->
 			</div>
 		</div>
 	</div>

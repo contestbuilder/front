@@ -6,12 +6,36 @@ angular
     .controller('CreateTestCaseController', CreateTestCaseController);
 
 /** @ngInject */
-function CreateTestCaseController($scope, $location, $filter, Upload, PromiseProcess, routeContest, routeProblem, testCaseService) {
+function CreateTestCaseController($routeParams, $scope, $location, $filter, Upload, PromiseProcess, testCaseService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = routeContest;
-        vm.problem = routeProblem;
+        vm.contest = {};
+        vm.problem = {};
+        vm.loading = true;
+
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true
+            },
+
+            problem: {
+                name:     true,
+                nickname: true,
+                test_cases: {
+                    id: true
+                }
+            }
+        }, {
+            contest_nickname: $routeParams.contest_nickname,
+            problem_nicknmae: $routeParams.problem_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+            vm.problem = data.problem[0];
+
+            vm.loading = false;
+        });
 
         vm.form = {
             test_cases: [{
@@ -42,20 +66,20 @@ function CreateTestCaseController($scope, $location, $filter, Upload, PromisePro
                 var params = {};
 
                 if(test_case.inputSignedUrl) {
-                    params.input_file_name = test_case.inputSignedUrl.file_name;
+                    params.input_file = test_case.inputSignedUrl.file_name;
                 } else {
                     params.input = test_case.input;
                 }
 
                 if(test_case.outputSignedUrl) {
-                    params.output_file_name = test_case.outputSignedUrl.file_name;
+                    params.output_file = test_case.outputSignedUrl.file_name;
                 } else {
                     params.output = test_case.output;
                 }
 
                 return testCaseService.createTestCase(vm.contest.nickname, vm.problem.nickname, params)
                 .then(function(test_case) {
-                    return test_case._id;
+                    return test_case.id;
                 });
             });
         });
@@ -90,8 +114,8 @@ function CreateTestCaseController($scope, $location, $filter, Upload, PromisePro
         var fileReader = new FileReader();
         fileReader.onload = function(evt) {
             $scope.$apply(function () {
-                if(fileReader.result.length > 500) {
-                    vm.form.test_cases[index][fileType] = fileReader.result.substr(0, 497) + '...';
+                if(fileReader.result.length > 1024) {
+                    vm.form.test_cases[index][fileType] = fileReader.result.substr(0, 1021) + '...';
                 } else {
                     vm.form.test_cases[index][fileType] = fileReader.result;
                 }
