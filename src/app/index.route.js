@@ -15,16 +15,16 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
     /* main */
     .when(frontUrls.urls.main, {
-        templateUrl : 'app/main/main.html',
-        controller  : 'MainController',
+        templateUrl:  'app/main/main.html',
+        controller:   'MainController',
         controllerAs: 'vm'
     })
 
 
     /* login */
     .when(frontUrls.urls.login, {
-        templateUrl : 'app/login/login.html',
-        controller  : 'LoginController',
+        templateUrl:  'app/login/login.html',
+        controller:   'LoginController',
         controllerAs: 'vm'
     })
 
@@ -58,19 +58,18 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
         controllerAs: 'vm'
     })
     .when(frontUrls.urls.user.view, {
-        templateUrl : 'app/users/view/view-user.html',
-        controller  : 'ViewUserController',
+        templateUrl:  'app/users/view/view-user.html',
+        controller:   'ViewUserController',
         controllerAs: 'vm',
-        resolve     : {
-            routeMe:   getMe,
-            routeUser: getUser
+        resolve: {
+            routeMe: getMe
         }
     })
     .when(frontUrls.urls.user.list, {
-        templateUrl : 'app/users/view-all/view-all-users.html',
-        controller  : 'ViewAllUsersController',
+        templateUrl:  'app/users/view-all/view-all-users.html',
+        controller:   'ViewAllUsersController',
         controllerAs: 'vm',
-        resolve     : {
+        resolve: {
             routeMe: getMe
         }
     })

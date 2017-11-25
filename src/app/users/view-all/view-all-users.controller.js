@@ -6,16 +6,24 @@ angular
     .controller('ViewAllUsersController', ViewAllUsersController);
 
 /** @ngInject */
-function ViewAllUsersController(userService, routeMe) {
+function ViewAllUsersController(userService, routeMe, graphqlService) {
     var vm = this;
 
     vm.init = function() {
         vm.me = routeMe;
         vm.usersList = [];
+        vm.loading = true;
 
-        userService.getUsers(vm.me.permissions && vm.me.permissions.delete_user)
-        .then(function(users) {
-            vm.usersList = users;
+        graphqlService.get({
+            user: {
+                name:       true,
+                username:   true,
+                deleted_at: true
+            }
+        }).then(function(data) {
+            vm.usersList = data.user;
+
+            vm.loading = false;
         });
     };
 

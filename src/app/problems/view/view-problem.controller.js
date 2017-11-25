@@ -34,7 +34,6 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
                 }
 
                 // checkers
-                // solutions
                 // test_cases
             }
         }, {
