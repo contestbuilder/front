@@ -29,12 +29,26 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
                 deleted_at:  true,
 
                 solutions: {
-                    name:     true,
-                    nickname: true
+                    name:      true,
+                    nickname:  true,
+                    last_edit: true,
+
+                    runs: {
+                        id:        true,
+                        number:    true,
+                        success:   true,
+                        verdict:   true,
+                        timestamp: true,
+
+                        test_case: {
+                            id: true
+                        }
+                    }
                 },
 
                 test_cases: {
-                    id: true
+                    id:        true,
+                    last_edit: true
                 }
 
                 // checkers
@@ -46,7 +60,7 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
             vm.contest = data.contest[0];
             vm.problem = data.problem[0];
 
-            getValidatedTestCases(vm.problem, []);//vm.problem.solutions);
+            getValidatedTestCases(vm.problem, vm.problem.solutions);
             getValidatedTestCases(vm.problem, []);//vm.problem.checkers);
 
             vm.loading = false;
@@ -93,18 +107,38 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
         runService.runSolutions(vm.contest.nickname, vm.problem.nickname, {
             solutions:  [ vm.problem.solutions[solution_index].nickname ],
             test_cases: vm.problem.test_cases.reduce(function(prev, cur) {
-                prev.push(cur._id);
+                prev.push(cur.id);
                 return prev;
             }, [])
         })
         .then(function(results) {
             validationResult = results;
 
-            return solutionService.getSolution(
-                vm.contest_nickname, 
-                vm.problem_nickname, 
-                vm.problem.solutions[solution_index].nickname
-            );
+            return graphqlService.get({
+                solution: {
+                    name:      true,
+                    nickname:  true,
+                    last_edit: true,
+
+                    runs: {
+                        id:        true,
+                        number:    true,
+                        success:   true,
+                        verdict:   true,
+                        timestamp: true,
+
+                        test_case: {
+                            id: true
+                        }
+                    }
+                }
+            }, {
+                contest_nickname:  vm.contest.nickname,
+                problem_nickname:  vm.problem.nickname,
+                solution_nickname: vm.problem.solutions[solution_index].nickname
+            }).then(function(data) {
+                return data.solution[0];
+            });
         })
         .then(function(solution) {
             vm.problem.solutions[solution_index] = solution;
@@ -171,7 +205,7 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
                 return;
             }
 
-            item.validatedTestCases = runService.getValidatedTestCases(problem, item.run, item.v);
+            item.validatedTestCases = runService.getValidatedTestCases(problem, item.runs, item);
         });
     }
 

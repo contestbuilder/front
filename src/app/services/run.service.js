@@ -29,21 +29,22 @@ function runService($http, apiUrl) {
         });
     };
 
-    service.getValidatedTestCases = function(problem, runs, versions) {
-        var test_cases = angular.copy(problem.test_cases);
-        var runs = angular.copy(runs).reverse();
+    service.getValidatedTestCases = function(problem, runs, item) {
+        var test_cases = angular.copy(problem.test_cases),
+            runs       = angular.copy(runs).reverse();
 
         runs.forEach(function(run) {
-            if(hasCriticalAfter(versions, run.timestamp)) {
+            if(new Date(item.last_edit).getTime() >= new Date(run.timestamp).getTime()) {
                 return;
             }
 
             for(var i=0; i<test_cases.length; i++) {
-                if(test_cases[i]._id == run.test_case_id) {
-                    if(!hasCriticalAfter(test_cases[i].v, run.timestamp)
+                if(test_cases[i].id == run.test_case.id) {
+                    if(new Date(test_cases[i].last_edit).getTime() < new Date(run.timestamp).getTime()
                     && run.verdict == 'Accepted') {
                         test_cases.splice(i, 1);
                     }
+
                     break;
                 }
             }

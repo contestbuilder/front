@@ -77,7 +77,7 @@
 					</span>
 					<a
 						ng-if="item.validatedTestCases"
-						ng-href="{{ 'contest.problem.solution.run.view' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname : item.run[ item.run.length-1 ].run_number }}"
+						ng-href="{{ 'contest.problem.solution.run.view' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname : item.runs[ item.runs.length-1 ].number }}"
 					>{{ item.validatedTestCases }}/{{ list.parent.problem.test_cases.length }}</a>
 				</div>
 				<div class="col-4">
@@ -215,7 +215,7 @@
 					</span>
 					<a
 						ng-if="item.validatedTestCases"
-						ng-href="{{ 'contest.problem.checker.run.view' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname : item.run[ item.run.length-1 ].run_number }}"
+						ng-href="{{ 'contest.problem.checker.run.view' | url : list.parent.contest.nickname : list.parent.problem.nickname : item.nickname : item.run[ item.run.length-1 ].number }}"
 					>{{ item.validatedTestCases }}/{{ list.parent.problem.test_cases.length }}</a>
 				</div>
 				<div class="col-4">
