@@ -80,10 +80,8 @@ function breadcrumbs() {
                         // testcase W
                         if(vm.testCase) {
                             var order;
-                            if(vm.testCase.current) {
-                                order = vm.testCase.current.order;
-                            } else if(Array.isArray(vm.testCase.v)) {
-                                order = vm.testCase.v[ vm.testCase.v.length-1 ].order;
+                            if(vm.testCase) {
+                                order = vm.testCase.order;
                             } else {
                                 order = 1;
                             }

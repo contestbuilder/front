@@ -65,16 +65,20 @@ function CreateTestCaseController($routeParams, $scope, $location, $filter, Uplo
             promiseProcess.push(function() {
                 var params = {};
 
+                params.input = test_case.input;
                 if(test_case.inputSignedUrl) {
-                    params.input_file = test_case.inputSignedUrl.file_name;
-                } else {
-                    params.input = test_case.input;
+                    params.input_file_id = test_case.inputFile.id;
+                }
+                if(test_case.inputLarge) {
+                    params.input_large = true;
                 }
 
+                params.output = test_case.output;
                 if(test_case.outputSignedUrl) {
-                    params.output_file = test_case.outputSignedUrl.file_name;
-                } else {
-                    params.output = test_case.output;
+                    params.output_file_id = test_case.outputFile.id;
+                }
+                if(test_case.outputLarge) {
+                    params.output_large = true;
                 }
 
                 return testCaseService.createTestCase(vm.contest.nickname, vm.problem.nickname, params)
@@ -116,6 +120,7 @@ function CreateTestCaseController($routeParams, $scope, $location, $filter, Uplo
             $scope.$apply(function () {
                 if(fileReader.result.length > 1024) {
                     vm.form.test_cases[index][fileType] = fileReader.result.substr(0, 1021) + '...';
+                    vm.form.test_cases[index][fileType + 'Large'] = true;
                 } else {
                     vm.form.test_cases[index][fileType] = fileReader.result;
                 }
@@ -130,38 +135,52 @@ function CreateTestCaseController($routeParams, $scope, $location, $filter, Uplo
         return testCaseService.getDownloadFileSignedUrl(
             vm.contest.nickname, 
             vm.problem.nickname, 
-            vm.form.test_cases[index][fileType + 'SignedUrl'].file_name
+            vm.form.test_cases[index][fileType + 'File'].id
         );
     };
 
     vm.getSignedUploadCallback = function(index, fileType, file) {
-        return testCaseService.getUploadFileSignedUrl(vm.contest.nickname, vm.problem.nickname, {})
-            .then(function(signedUrl) {
-                vm.loadTestCaseFromFile(index, fileType, file);
+        return testCaseService.getUploadFileSignedUrl(
+            vm.contest.nickname,
+            vm.problem.nickname,
+            {
+                name: file.name
+            }
+        ).then(function(signedUrl) {
+            vm.loadTestCaseFromFile(index, fileType, file);
 
-                vm.form.test_cases[index][fileType + 'File'] = file;
-                vm.form.test_cases[index][fileType + 'SignedUrl'] = signedUrl;
-                vm.currentUploadingCount++;
+            vm.form.test_cases[index][fileType + 'File'] = file;
+            vm.form.test_cases[index][fileType + 'SignedUrl'] = signedUrl;
+            vm.currentUploadingCount++;
 
-                return signedUrl;
-            });
+            return signedUrl;
+        });
     };
 
     vm.afterUploadCallback = function(index, fileType, file) {
-        vm.currentUploadingCount--;
+        return testCaseService.registerFile(
+            vm.contest.nickname,
+            vm.problem.nickname,
+            file.name
+        ).then(function(fileId) {
+            vm.form.test_cases[index][fileType + 'File'].id = fileId;
 
-        return Promise.resolve();
+            vm.currentUploadingCount--;
+
+            return true;
+        });
     };
 
     vm.removeCallback = function(index, fileType) {
         return testCaseService.deleteFile(
             vm.contest.nickname, 
             vm.problem.nickname, 
-            vm.form.test_cases[index][fileType + 'SignedUrl'].file_name
+            vm.form.test_cases[index][fileType + 'File'].id
         )
         .then(function(data) {
             delete vm.form.test_cases[index][fileType + 'File'];
             delete vm.form.test_cases[index][fileType + 'SignedUrl'];
+            delete vm.form.test_cases[index][fileType + 'Large'];
             vm.form.test_cases[index][fileType] = '';
 
             return data;

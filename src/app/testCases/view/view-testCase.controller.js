@@ -27,10 +27,12 @@ function ViewTestCaseController($routeParams, testCaseService, graphqlService) {
             },
 
             test_case: {
-                id:     true,
-                order:  true,
-                input:  true,
-                output: true
+                id:             true,
+                order:          true,
+                input:          true,
+                output:         true,
+                input_text_id:  true,
+                output_text_id: true
             }
         }, {
             contest_nickname: $routeParams.contest_nickname,
@@ -45,23 +47,21 @@ function ViewTestCaseController($routeParams, testCaseService, graphqlService) {
         });
     };
 
-    // vm.loadMore = function(inputType) {
-    //     var query = {};
-    //     query['complete_' + inputType] = 'true';
+    vm.loadMore = function(inputType) {
+        vm[inputType + 'Loading'] = true;
+        graphqlService.get({
+            text: {
+                text: true
+            }
+        }, {
+            text_id: vm.test_case[inputType + '_text_id']
+        }).then(function(data) {
+            vm.test_case[inputType] = data.text[0].text;
 
-    //     vm[inputType + 'Loading'] = true;
-    //     testCaseService.getTestCase(
-    //         vm.contest.nickname,
-    //         vm.problem.nickname,
-    //         vm.test_case.id,
-    //         query
-    //     )
-    //     .then(function(test_case) {
-    //         vm.test_case.current[inputType] = test_case.current[inputType];
-    //         vm[inputType + 'Loaded'] = true;
-    //         vm[inputType + 'Loading'] = false;
-    //     })
-    // };
+            vm[inputType + 'Loading'] = false;
+            vm[inputType + 'Loaded'] = true;
+        });
+    };
 
     vm.init();
     return vm;

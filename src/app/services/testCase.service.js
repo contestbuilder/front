@@ -79,6 +79,15 @@ function testCaseService($http, apiUrl) {
         });
     };
 
+    service.registerFile = function(contest_nickname, problem_nickname, file_name) {
+        return $http.post(
+            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/test_case/file/' + file_name
+        )
+        .then(function(result) {
+            return result.data.file_id;
+        });
+    };
+
     return service;
 }
 

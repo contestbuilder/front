@@ -23,28 +23,28 @@
 				<p>Entrada:</p>
 				<pre>{{ vm.test_case.input }}</pre>
 
-				<!-- <button
-					ng-if="vm.test_case.large_input && !vm.inputLoaded"
+				<button
+					ng-if="vm.test_case.input_text_id && !vm.inputLoaded"
 
 					type="button"
 					class="btn btn-link"
 					ng-click="vm.loadMore('input');"
 					ng-disabled="vm.inputLoading"
-				>Carregar entrada completa</button> -->
+				>Carregar entrada completa</button>
 			</div>
 
 			<div class="col-6">
 				<p>Saída:</p>
 				<pre>{{ vm.test_case.output }}</pre>
 
-				<!-- <button
-					ng-if="vm.test_case.large_output && !vm.outputLoaded"
+				<button
+					ng-if="vm.test_case.output_text_id && !vm.outputLoaded"
 
 					type="button"
 					class="btn btn-link"
 					ng-click="vm.loadMore('output');"
 					ng-disabled="vm.outputLoading"
-				>Carregar saída completa</button> -->
+				>Carregar saída completa</button>
 			</div>
 		</div>
 	</div>
