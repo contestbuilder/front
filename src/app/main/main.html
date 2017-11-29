@@ -4,14 +4,17 @@
 	<div class="container">
 		<h1 class="display-3">Olá!</h1>
 		<p>Seja bem vindo ao Contest Builder.</p>
-		<p><a class="btn btn-primary btn-lg" href="/login" role="button">Faça login &raquo;</a></p>
+
+		<p ng-if="!vm.logged">
+			<a class="btn btn-primary btn-lg" href="/login" role="button">Faça login &raquo;</a>
+		</p>
 	</div>
 </div>
 
 <div class="container">
     <div class="row">
         <div class="col-12">
-            <p>Testing</p>
+            <p>Divirta-se.</p>
         </div>
     </div>
 </div>

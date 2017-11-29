@@ -88,7 +88,7 @@ function breadcrumbs() {
 
                             vm.items.push({
                                 label: '#' + order + ' caso de teste',
-                                url:   $filter('url')('contest.problem.testCase.view', vm.contest.nickname, vm.problem.nickname, vm.testCase._id)
+                                url:   $filter('url')('contest.problem.testCase.view', vm.contest.nickname, vm.problem.nickname, vm.testCase.id)
                             });
                         }
                     }

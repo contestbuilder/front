@@ -6,26 +6,41 @@ angular
     .controller('RegularInvitationController', RegularInvitationController);
 
 /** @ngInject */
-function RegularInvitationController($location, $routeParams, $filter, $route, authService, routeUser, userService) {
+function RegularInvitationController($location, $routeParams, $filter, $route, authService, userService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
-        vm.user_id = $routeParams.user_id;
-        vm.user = routeUser;
+        vm.user = {};
+        vm.loading = true;
 
-        fillDefaultValues();
+        graphqlService.get({
+            user: {
+                id:       true,
+                name:     true,
+                email:    true,
+                username: true
+            }
+        }, {
+            user_id: +$routeParams.user_id
+        }).then(function(data) {
+            vm.user = data.user[0];
+
+            fillDefaultValues(vm.user);
+
+            vm.loading = false;
+        });
     };
 
-    function fillDefaultValues() {
+    function fillDefaultValues(user) {
         vm.form = {
-            email:    routeUser.email,
-            username: routeUser.username || '',
+            email:    user.email,
+            username: user.username || '',
             password: ''
         };
     }
 
     vm.submit = function(form) {
-        userService.editUser(vm.user_id, {
+        userService.editUser(vm.user.id, {
             username: form.username,
             password: form.password
         })

@@ -6,10 +6,11 @@ angular
     .controller('MainController', MainController);
 
 /** @ngInject */
-function MainController() {
+function MainController(authService) {
     var vm = this;
 
     vm.init = function() {
+    	vm.logged = authService.isLogged();
     };
 
     vm.init();

@@ -40,9 +40,6 @@ function navbar() {
             }, {
                 label:   'Usuários',
                 urlPath: 'user.list'
-            }, {
-                label:   'Histórico',
-                urlPath: 'log'
             }];
 
             links.forEach(function(link) {

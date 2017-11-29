@@ -29,7 +29,7 @@ function CreateTestCaseController($routeParams, $scope, $location, $filter, Uplo
             }
         }, {
             contest_nickname: $routeParams.contest_nickname,
-            problem_nicknmae: $routeParams.problem_nickname
+            problem_nickname: $routeParams.problem_nickname
         }).then(function(data) {
             vm.contest = data.contest[0];
             vm.problem = data.problem[0];
@@ -123,6 +123,7 @@ function CreateTestCaseController($routeParams, $scope, $location, $filter, Uplo
                     vm.form.test_cases[index][fileType + 'Large'] = true;
                 } else {
                     vm.form.test_cases[index][fileType] = fileReader.result;
+                    vm.form.test_cases[index][fileType + 'Large'] = false;
                 }
             });
         };

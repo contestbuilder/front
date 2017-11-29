@@ -1,5 +1,13 @@
 <navbar></navbar>
 
+<breadcrumbs
+	ng-if="!vm.loading"
+
+	contests="true"
+	contest="vm.contest"
+	new="'o contributor'"
+></breadcrumbs>
+
 <div class="container">
 	<div class="row">
 		<div class="col-12">
@@ -14,7 +22,7 @@
 		<div class="col-12" ng-if="!vm.loading && !vm.usersList.length">
 			<p>Não há mais quem adicionar.</p>
 		</div>
-		<div class="col-12 col-lg-6" ng-if="!vm.loading && !!vm.usersList.length">
+		<div class="col-12 col-lg-6" ng-if="!vm.loading && vm.usersList.length">
 			<form novalidate name="userForm" ng-submit="vm.submit();">
 				<div class="form-group">
 					<select 

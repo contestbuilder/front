@@ -17,7 +17,9 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
     .when(frontUrls.urls.main, {
         templateUrl:  'app/main/main.html',
         controller:   'MainController',
-        controllerAs: 'vm'
+        controllerAs: 'vm',
+        resolve: {
+        }
     })
 
 
@@ -31,11 +33,10 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
     /* invitations */
     .when(frontUrls.urls.invitation.regular, {
-        templateUrl : 'app/invitations/regular/regular-invitation.html',
-        controller  : 'RegularInvitationController',
+        templateUrl:  'app/invitations/regular/regular-invitation.html',
+        controller:   'RegularInvitationController',
         controllerAs: 'vm',
-        resolve     : {
-            routeUser: getUserById
+        resolve: {
         }
     })
 
@@ -104,11 +105,10 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
     /* contributors */
     .when(frontUrls.urls.contest.contributor.new, {
-        templateUrl : 'app/contributors/create/create-contributor.html',
-        controller  : 'CreateContributorController',
+        templateUrl:  'app/contributors/create/create-contributor.html',
+        controller:   'CreateContributorController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest
+        resolve: {
         }
     })
 
