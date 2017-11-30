@@ -42,14 +42,14 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
 
     /* logs */
-    .when(frontUrls.urls.log, {
-        templateUrl : 'app/logs/view-all/view-all-logs.html',
-        controller  : 'ViewAllLogsController',
-        controllerAs: 'vm',
-        resolve     : {
-            routeMe: getMe
-        }
-    })
+    // .when(frontUrls.urls.log, {
+    //     templateUrl : 'app/logs/view-all/view-all-logs.html',
+    //     controller  : 'ViewAllLogsController',
+    //     controllerAs: 'vm',
+    //     resolve     : {
+    //         routeMe: getMe
+    //     }
+    // })
 
 
     /* users */
@@ -162,35 +162,35 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
 
     /* checkers */
-    .when(frontUrls.urls.contest.problem.checker.new, {
-        templateUrl : 'app/checkers/create/create-checker.html',
-        controller  : 'CreateCheckerController',
-        controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
-        }
-    })
-    .when(frontUrls.urls.contest.problem.checker.view, {
-        templateUrl : 'app/checkers/view/view-checker.html',
-        controller  : 'ViewCheckerController',
-        controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem,
-            routeChecker: getChecker
-        }
-    })
-    .when(frontUrls.urls.contest.problem.checker.edit, {
-        templateUrl : 'app/checkers/edit/edit-checker.html',
-        controller  : 'EditCheckerController',
-        controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem,
-            routeChecker: getChecker
-        }
-    })
+    // .when(frontUrls.urls.contest.problem.checker.new, {
+    //     templateUrl : 'app/checkers/create/create-checker.html',
+    //     controller  : 'CreateCheckerController',
+    //     controllerAs: 'vm',
+    //     resolve     : {
+    //         routeContest: getContest,
+    //         routeProblem: getProblem
+    //     }
+    // })
+    // .when(frontUrls.urls.contest.problem.checker.view, {
+    //     templateUrl : 'app/checkers/view/view-checker.html',
+    //     controller  : 'ViewCheckerController',
+    //     controllerAs: 'vm',
+    //     resolve     : {
+    //         routeContest: getContest,
+    //         routeProblem: getProblem,
+    //         routeChecker: getChecker
+    //     }
+    // })
+    // .when(frontUrls.urls.contest.problem.checker.edit, {
+    //     templateUrl : 'app/checkers/edit/edit-checker.html',
+    //     controller  : 'EditCheckerController',
+    //     controllerAs: 'vm',
+    //     resolve     : {
+    //         routeContest: getContest,
+    //         routeProblem: getProblem,
+    //         routeChecker: getChecker
+    //     }
+    // })
 
 
     /* test cases */
@@ -219,84 +219,74 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
     /* solution runs */
     .when(frontUrls.urls.contest.problem.solution.run.list, {
-        templateUrl : 'app/solutions/runs/list/solution-runs.html',
-        controller  : 'ViewSolutionRunsController',
+        templateUrl:  'app/solutions/runs/list/solution-runs.html',
+        controller:   'ViewSolutionRunsController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest : getContest,
-            routeProblem : getProblem,
-            routeSolution: getSolution
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.solution.run.view, {
-        templateUrl : 'app/solutions/runs/view/solution-run.html',
-        controller  : 'ViewSolutionRunController',
+        templateUrl:  'app/solutions/runs/view/solution-run.html',
+        controller:   'ViewSolutionRunController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest : getContest,
-            routeProblem : getProblem,
-            routeSolution: getSolution
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.solutionRun.list, {
-        templateUrl : 'app/solutionsRuns/list/solutionRuns-list.html',
-        controller  : 'ViewProblemSolutionRunsController',
+        templateUrl:  'app/solutionsRuns/list/solutionRuns-list.html',
+        controller:   'ViewProblemSolutionRunsController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
+        resolve: {
         }
     })
     .when(frontUrls.urls.contest.problem.solutionRun.view, {
-        templateUrl : 'app/solutionsRuns/view/view-solutionRun.html',
-        controller  : 'ViewProblemSolutionRunController',
+        templateUrl:  'app/solutionsRuns/view/view-solutionRun.html',
+        controller:   'ViewProblemSolutionRunController',
         controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
+        resolve: {
         }
     })
 
 
     /* checker runs */
-    .when(frontUrls.urls.contest.problem.checker.run.list, {
-        templateUrl : 'app/checkers/runs/list/checker-runs.html',
-        controller  : 'ViewCheckerRunsController',
-        controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem,
-            routeChecker: getChecker
-        }
-    })
-    .when(frontUrls.urls.contest.problem.checker.run.view, {
-        templateUrl : 'app/checkers/runs/view/checker-run.html',
-        controller  : 'ViewCheckerRunController',
-        controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem,
-            routeChecker: getChecker
-        }
-    })
-    .when(frontUrls.urls.contest.problem.checkerRun.list, {
-        templateUrl : 'app/checkersRuns/list/checkerRuns-list.html',
-        controller  : 'ViewProblemCheckerRunsController',
-        controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
-        }
-    })
-    .when(frontUrls.urls.contest.problem.checkerRun.view, {
-        templateUrl : 'app/checkersRuns/view/view-checkerRun.html',
-        controller  : 'ViewProblemCheckerRunController',
-        controllerAs: 'vm',
-        resolve     : {
-            routeContest: getContest,
-            routeProblem: getProblem
-        }
-    })
+    // .when(frontUrls.urls.contest.problem.checker.run.list, {
+    //     templateUrl : 'app/checkers/runs/list/checker-runs.html',
+    //     controller  : 'ViewCheckerRunsController',
+    //     controllerAs: 'vm',
+    //     resolve     : {
+    //         routeContest: getContest,
+    //         routeProblem: getProblem,
+    //         routeChecker: getChecker
+    //     }
+    // })
+    // .when(frontUrls.urls.contest.problem.checker.run.view, {
+    //     templateUrl : 'app/checkers/runs/view/checker-run.html',
+    //     controller  : 'ViewCheckerRunController',
+    //     controllerAs: 'vm',
+    //     resolve     : {
+    //         routeContest: getContest,
+    //         routeProblem: getProblem,
+    //         routeChecker: getChecker
+    //     }
+    // })
+    // .when(frontUrls.urls.contest.problem.checkerRun.list, {
+    //     templateUrl : 'app/checkersRuns/list/checkerRuns-list.html',
+    //     controller  : 'ViewProblemCheckerRunsController',
+    //     controllerAs: 'vm',
+    //     resolve     : {
+    //         routeContest: getContest,
+    //         routeProblem: getProblem
+    //     }
+    // })
+    // .when(frontUrls.urls.contest.problem.checkerRun.view, {
+    //     templateUrl : 'app/checkersRuns/view/view-checkerRun.html',
+    //     controller  : 'ViewProblemCheckerRunController',
+    //     controllerAs: 'vm',
+    //     resolve     : {
+    //         routeContest: getContest,
+    //         routeProblem: getProblem
+    //     }
+    // })
 
 
     .otherwise({

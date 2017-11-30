@@ -29,13 +29,13 @@ function runsList() {
             vm.solutionRuns = [];
             for(var i=0; i<vm.runs.length; i++) {
                 var newSolutionRun = {
-                    run_number: vm.runs[i].run_number,
-                    runs:       [ vm.runs[i] ],
-                    timestamp:  vm.runs[i].timestamp
+                    number:    vm.runs[i].number,
+                    runs:      [ vm.runs[i] ],
+                    timestamp: vm.runs[i].timestamp
                 };
 
                 for(var j=vm.runs.length-1; j>i; j--) {
-                    if(vm.runs[i].run_number === vm.runs[j].run_number) {
+                    if(vm.runs[i].number === vm.runs[j].number) {
                         newSolutionRun.runs.push(vm.runs[j]);
                         vm.runs.splice(j, 1);
                     }
@@ -44,7 +44,7 @@ function runsList() {
                 vm.solutionRuns.push(newSolutionRun);
             }
             vm.solutionRuns.sort(function(a, b) {
-                return b.run_number - a.run_number;
+                return b.number - a.number;
             });
         };
 

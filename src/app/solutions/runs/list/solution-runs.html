@@ -1,6 +1,8 @@
 <navbar></navbar>
 
 <breadcrumbs
+	ng-if="!vm.loading"
+
 	contests="true"
 	contest="vm.contest"
 	problem="vm.problem"
@@ -19,6 +21,7 @@
 		</div>
 
 		<runs-list
+			ng-if="!vm.loading"
 			runs="vm.runs"
 			get-link="vm.getRunLink"
 		></runs-list>
