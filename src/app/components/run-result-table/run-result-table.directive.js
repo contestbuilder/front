@@ -35,8 +35,8 @@ function runResultTable() {
             // it will show all the solutions that were run.
             if(typeof vm.solutions === 'boolean' && vm.solutions) {
                 vm.items = vm.problem.solutions.filter(function(solution) {
-                    return solution.run.some(function(solutionRun) {
-                        return solutionRun.run_number == vm.runNumber;
+                    return solution.runs.some(function(solutionRun) {
+                        return solutionRun.number == vm.runNumber;
                     });
                 });
             } else if(Array.isArray(vm.solutions)) {
@@ -45,27 +45,25 @@ function runResultTable() {
 
             // if not defined which checkers should be shown, 
             // it will show all the checkers that were run.
-            if(typeof vm.checkers === 'boolean' && vm.checkers) {
-                vm.items = vm.problem.checkers.filter(function(solution) {
-                    return solution.run.some(function(solutionRun) {
-                        return solutionRun.run_number == vm.runNumber;
-                    });
-                });
-            } else if(Array.isArray(vm.checkers)) {
-                vm.items = vm.checkers;
-            }
+            // if(typeof vm.checkers === 'boolean' && vm.checkers) {
+            //     vm.items = vm.problem.checkers.filter(function(solution) {
+            //         return solution.run.some(function(solutionRun) {
+            //             return solutionRun.run_number == vm.runNumber;
+            //         });
+            //     });
+            // } else if(Array.isArray(vm.checkers)) {
+            //     vm.items = vm.checkers;
+            // }
 
             // all the runs with the run_number.
             vm.runs = vm.items.reduce(function(prev, item) {
                 return prev.concat(
-                    item.run
+                    item.runs
                     .filter(function(itemRun) {
-                        return itemRun.run_number == vm.runNumber;
+                        return itemRun.number == vm.runNumber;
                     })
                     .map(function(itemRun) {
-                        itemRun.item              = item;
-                        itemRun.test_case         = getTestCase(vm.problem, itemRun.test_case_id);
-                        itemRun.test_case.current = itemRun.test_case.v[ itemRun.test_case.v.length-1 ];
+                        itemRun.item = item;
 
                         return itemRun;
                     })
@@ -84,12 +82,6 @@ function runResultTable() {
             vm.testCaseRunMap = {};
         };
 
-        function getTestCase(problem, test_case_id) {
-            return problem.test_cases.filter(function(test_case) {
-                return test_case._id == test_case_id;
-            })[0];
-        }
-
         vm.selectRun = function(runs, item_id, test_case_id) {
             vm.selectedRun = vm.getTestCaseRun(runs, item_id, test_case_id);
         };
@@ -101,8 +93,8 @@ function runResultTable() {
         vm.getTestCaseRun = function(runs, item_id, test_case_id) {
             if(vm.testCaseRunMap[item_id + '-' + test_case_id] === undefined) {
                 var testCaseRun = runs.filter(function(run) {
-                    return run.item._id  == item_id
-                        && run.test_case._id == test_case_id;
+                    return run.item.id  == item_id
+                        && run.test_case.id == test_case_id;
                 })[0];
 
                 testCaseRun.verdict = utilService.getVerdict(testCaseRun.verdict);

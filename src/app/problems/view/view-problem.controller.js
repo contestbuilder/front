@@ -221,9 +221,7 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
     };
 
     vm.uploadProblemFile = function(file) {
-        return problemService.uploadProblemFile(vm.contest.nickname, vm.problem.nickname, {
-            name: file.name
-        });
+        return problemService.registerFile(vm.contest.nickname, vm.problem.nickname, file.name);
     };
 
     vm.removeProblemFile = function() {

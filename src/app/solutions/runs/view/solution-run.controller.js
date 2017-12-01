@@ -31,11 +31,21 @@ function ViewSolutionRunController($routeParams, $filter, graphqlService) {
             },
 
             solution: {
+                id:       true,
                 name:     true,
                 nickname: true,
 
                 runs: {
-                    number: true
+                    number:  true,
+                    verdict: true,
+                    output:  true,
+
+                    test_case: {
+                        id:     true,
+                        input:  true,
+                        output: true,
+                        order:  true
+                    }
                 }
             }
         }, {

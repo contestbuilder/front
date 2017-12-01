@@ -48,7 +48,7 @@ function problemService($http, apiUrl) {
     };
 
 
-    service.downloadProblemFile = function(contest_nickname, problem_nickname, versionId) {
+    service.downloadProblemFile = function(contest_nickname, problem_nickname) {
         return $http.get(
             apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file'
         )
@@ -67,10 +67,9 @@ function problemService($http, apiUrl) {
         });
     };
 
-    service.uploadProblemFile = function(contest_nickname, problem_nickname, data) {
+    service.registerFile = function(contest_nickname, problem_nickname, file_name) {
         return $http.put(
-            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file',
-            data
+            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file/' + file_name
         )
         .then(function(result) {
             return result.data.problem;
