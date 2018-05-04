@@ -19,7 +19,6 @@ function singleAttachment() {
 
             // callbacks
             signedDownloadCallback: '&',
-            signedUploadCallback:   '&',
             afterUploadCallback:    '&',
             removeCallback:         '&'
         },
@@ -31,17 +30,27 @@ function singleAttachment() {
     return directive;
 
     /** @ngInject */
-    function SingleAttachmentController(downloadService, Upload) {
+    function SingleAttachmentController(fileService, downloadService, Upload) {
         var vm = this;
 
         vm.init = function() {
             vm.loading = false;
+
+            vm.recentlyUploaded     = false;
+            vm.recentlyUploadedPath = '';
         };
 
         vm.downloadFile = function() {
             vm.loading = true;
 
-            vm.signedDownloadCallback()
+            var signedUrlPromise;
+            if(vm.recentlyUploaded && vm.recentlyUploadedPath) {
+                signedUrlPromise = fileService.getSignedDownloadUrl(vm.recentlyUploadedPath);
+            } else {
+                signedUrlPromise = vm.signedDownloadCallback();
+            }
+
+            signedUrlPromise
                 .then(function(signedUrl) {
                     vm.loading = false;
 
@@ -87,7 +96,7 @@ function singleAttachment() {
             var fileName = file.name;
 
             vm.loading = true;
-            vm.signedUploadCallback({ file: file })
+            fileService.getSignedUploadUrl(file.name)
                 .then(function(signedUrl) {
                     return new Promise(function(resolve, reject) {
                         Upload.upload({
@@ -107,7 +116,10 @@ function singleAttachment() {
                             }
                         })
                         .then(function finishCallback(response) {
-                            return resolve(response.data);
+                                return resolve({
+                                    result: response.data,
+                                    path:   signedUrl.key
+                                });
                         }, function errCallback(err) {
                             return reject(err);
                         }, function progressCallback(evt) {
@@ -116,7 +128,13 @@ function singleAttachment() {
                     });
                 })
                 .then(function(result) {
-                    return vm.afterUploadCallback({ file: file });
+                    vm.recentlyUploaded     = true;
+                    vm.recentlyUploadedPath = result.path;
+
+                    return vm.afterUploadCallback({
+                        file:     file,
+                        filePath: result.path
+                    });
                 })
                 .then(function(response) {
                     vm.loading = false;

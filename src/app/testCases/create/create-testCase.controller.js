@@ -17,19 +17,32 @@ function CreateTestCaseController($routeParams, $scope, $location, $filter, Uplo
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
             },
 
             problem: {
-                name:     true,
-                nickname: true,
+                name:       true,
+                nickname:   true,
                 test_cases: {
-                    id: true
+                    id: true,
+
+                    conditions: {
+                        show_deleted: '$show_deleted'
+                    }
+                },
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
                 }
             }
         }, {
-            contest_nickname: $routeParams.contest_nickname,
-            problem_nickname: $routeParams.problem_nickname
+            contest_nickname:  $routeParams.contest_nickname,
+            problem_nickname:  $routeParams.problem_nickname,
+            show_deleted:      false
         }).then(function(data) {
             vm.contest = data.contest[0];
             vm.problem = data.problem[0];

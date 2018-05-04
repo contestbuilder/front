@@ -17,8 +17,15 @@ function graphqlService($http, apiUrl) {
     };
 
     service.buildQuery = function(obj, variables) {
+        var parsedVariables = '';
+        if(typeof variables === 'object' && Object.keys(variables).length) {
+            parsedVariables = '(' + Object.keys(variables).map(function(variableKey) {
+                return '$' + variableKey + ': ' + translateType(typeof variables[variableKey]);
+            }).join(', ') + ')';
+        }
+
         return {
-            query:     recursivelyBuildQuery(obj),
+            query:     'query ' + parsedVariables + ' ' + recursivelyBuildQuery(obj),
             variables: variables || {}
         };
     };
@@ -27,6 +34,10 @@ function graphqlService($http, apiUrl) {
         var children = [];
 
         Object.keys(obj).forEach(function(key) {
+            if(key === 'conditions') {
+                return;
+            }
+
             var child = obj[key];
 
             if(typeof child === 'boolean' && child) {
@@ -36,7 +47,23 @@ function graphqlService($http, apiUrl) {
             }
         });
 
-        return '{ ' + children.join(', ') + ' }';
+        var parsedVariables = '';
+        if(typeof obj.conditions === 'object' && Object.keys(obj.conditions).length) {
+            parsedVariables = '(' + Object.keys(obj.conditions).map(function(variableKey) {
+                return variableKey + ': ' + obj.conditions[variableKey];
+            }).join(', ') + ')';
+        }
+
+        return parsedVariables + ' { ' + children.join(', ') + ' }';
+    }
+
+    function translateType(type) {
+        switch(type) {
+            case 'number':  return 'Int';
+            case 'string':  return 'String';
+            case 'boolean': return 'Boolean';
+            default:        return 'String';
+        }
     }
 
     return service;

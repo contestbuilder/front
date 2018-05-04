@@ -22,6 +22,10 @@ function CreateContributorController($routeParams, $location, $filter, contribut
                 contributors: {
                     name:     true,
                     username: true
+                },
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
                 }
             },
 

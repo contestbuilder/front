@@ -6,24 +6,32 @@ angular
     .controller('EditTestCaseController', EditTestCaseController);
 
 /** @ngInject */
-function EditTestCaseController($scope, $location, $filter, graphqlService, testCaseService) {
+function EditTestCaseController($routeParams, $scope, $location, $filter, graphqlService, testCaseService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = {};
-        vm.problem = {};
+        vm.contest  = {};
+        vm.problem  = {};
         vm.testCase = {};
-        vm.loading = true;
+        vm.loading  = true;
 
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
             },
 
             problem: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
+                }
             },
 
             test_case: {
@@ -41,18 +49,25 @@ function EditTestCaseController($scope, $location, $filter, graphqlService, test
                 output_file: {
                     id:   true,
                     name: true
+                },
+
+                conditions: {
+                    test_case_id: '$test_case_id'
                 }
             }
+        }, {
+            contest_nickname: $routeParams.contest_nickname,
+            problem_nickname: $routeParams.problem_nickname,
+            test_case_id:     +$routeParams.test_case_id
         }).then(function(data) {
-            vm.contest = data.contest[0];
-            vm.problem = data.problem[0];
+            vm.contest  = data.contest[0];
+            vm.problem  = data.problem[0];
             vm.testCase = data.test_case[0];
 
             fillInitialValues();
 
             vm.loading = false;
         });
-
 
         vm.currentUploadingCount = 0;
     };

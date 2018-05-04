@@ -17,12 +17,20 @@ function CreateSolutionController($location, $filter, $routeParams, languages, s
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
             },
 
             problem: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
+                }
             }
         }, {
             contest_nickname: $routeParams.contest_nickname,

@@ -17,14 +17,27 @@ function EditProblemController($routeParams, $location, $filter, problemService,
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
             },
 
             problem: {
                 name:        true,
                 nickname:    true,
                 description: true,
-                time_limit:  true
+                time_limit:  true,
+
+                file: {
+                    id:   true,
+                    name: true
+                },
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
+                }
             }
         }, {
             contest_nickname: $routeParams.contest_nickname,
@@ -43,7 +56,9 @@ function EditProblemController($routeParams, $location, $filter, problemService,
         vm.form = {
             name:        vm.problem.name,
             description: vm.problem.description,
-            time_limit:  vm.problem.time_limit
+            time_limit:  vm.problem.time_limit,
+            file:        vm.problem.file,
+            new_file:    null
         };
     }
 
@@ -51,7 +66,9 @@ function EditProblemController($routeParams, $location, $filter, problemService,
         problemService.editProblem(vm.contest.nickname, vm.problem.nickname, {
             name:        form.name,
             description: form.description,
-            time_limit:  form.time_limit
+            time_limit:  form.time_limit,
+            file:        form.file,
+            new_file:    form.new_file
         }).then(function(problem) {
             $location.path($filter('url')(
                 'contest.problem.view',
@@ -59,6 +76,22 @@ function EditProblemController($routeParams, $location, $filter, problemService,
                 problem.nickname
             ));
         });
+    };
+
+
+    vm.afterUpload = function(file, filePath) {
+        vm.form.new_file = {
+            name: file.name,
+            path: filePath
+        };
+
+        return Promise.resolve();
+    };
+
+    vm.removeProblemFile = function() {
+        delete vm.form.file;
+
+        return Promise.resolve();
     };
 
     vm.init();

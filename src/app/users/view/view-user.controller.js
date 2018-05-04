@@ -18,7 +18,11 @@ function ViewUserController($routeParams, userService, routeMe, graphqlService) 
             user: {
                 name:       true,
                 username:   true,
-                deleted_at: true
+                deleted_at: true,
+
+                conditions: {
+                    user_username: '$user_username'
+                }
             }
         }, {
             user_username: $routeParams.user_nickname

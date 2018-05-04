@@ -16,8 +16,12 @@ function CreateProblemController($location, $filter, $routeParams, problemServic
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
-            }
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
+            },
         }, {
             contest_nickname: $routeParams.contest_nickname
         }).then(function(data) {
@@ -38,7 +42,8 @@ function CreateProblemController($location, $filter, $routeParams, problemServic
         problemService.createProblem(vm.contest.nickname, {
             name:        form.name,
             description: form.description,
-            time_limit:  form.time_limit
+            time_limit:  form.time_limit,
+            file:        form.file
         }).then(function(problem) {
             $location.path($filter('url')(
                 'contest.problem.view',
@@ -46,6 +51,22 @@ function CreateProblemController($location, $filter, $routeParams, problemServic
                 problem.nickname
             ));
         });
+    };
+
+
+    vm.afterUpload = function(file, filePath) {
+        vm.form.file = {
+            name: file.name,
+            path: filePath
+        };
+
+        return Promise.resolve();
+    };
+
+    vm.removeProblemFile = function() {
+        delete vm.form.file;
+
+        return Promise.resolve();
     };
 
     vm.init();

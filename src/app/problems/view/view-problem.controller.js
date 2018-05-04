@@ -14,24 +14,39 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
         vm.problem = {};
         vm.loading = true;
 
+        vm.contest_nickname = $routeParams.contest_nickname;
+        vm.problem_nickname = $routeParams.problem_nickname;
+
+        updateProblem();
+    };
+
+    function updateProblem() {
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
             },
 
             problem: {
                 name:        true,
                 nickname:    true,
                 description: true,
-                file_url:    true,
                 time_limit:  true,
                 deleted_at:  true,
 
+                file: {
+                    name: true
+                },
+
                 solutions: {
-                    name:      true,
-                    nickname:  true,
-                    last_edit: true,
+                    name:       true,
+                    nickname:   true,
+                    last_edit:  true,
+                    deleted_at: true,
 
                     runs: {
                         id:        true,
@@ -47,11 +62,17 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
                 },
 
                 test_cases: {
-                    id:        true,
-                    last_edit: true
-                }
+                    id:         true,
+                    order:      true,
+                    last_edit:  true,
+                    deleted_at: true
+                },
 
                 // checkers
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
+                }
             }
         }, {
             contest_nickname: $routeParams.contest_nickname,
@@ -65,21 +86,13 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
 
             vm.loading = false;
         });
-
-        vm.contest_nickname = $routeParams.contest_nickname;
-        vm.problem_nickname = $routeParams.problem_nickname;
-    };
+    }
 
     vm.deleteSolution = function(solution) {
         return function() {
             solutionService.deleteSolution(vm.contest_nickname, vm.problem_nickname, solution.nickname)
             .then(function(contest) {
-                vm.contest = contest;
-                vm.problem = vm.contest.problems.filter(function(problem) {
-                    return problem.nickname == vm.problem_nickname;
-                })[0];
-                getValidatedTestCases(vm.problem, vm.problem.solutions);
-                getValidatedTestCases(vm.problem, vm.problem.checkers);
+                updateProblem();
             });
         };
     };
@@ -88,12 +101,16 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
         return function() {
             checkerService.deleteChecker(vm.contest_nickname, vm.problem_nickname, checker.nickname)
             .then(function(contest) {
-                vm.contest = contest;
-                vm.problem = vm.contest.problems.filter(function(problem) {
-                    return problem.nickname == vm.problem_nickname;
-                })[0];
-                getValidatedTestCases(vm.problem, vm.problem.solutions);
-                getValidatedTestCases(vm.problem, vm.problem.checkers);
+                updateProblem();
+            });
+        };
+    };
+
+    vm.deleteTestCase = function(test_case) {
+        return function() {
+            testCaseService.deleteTestCase(vm.contest_nickname, vm.problem_nickname, test_case.id)
+            .then(function(success) {
+                updateProblem();
             });
         };
     };
@@ -184,21 +201,6 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
         });
     };
 
-    vm.deleteTestCase = function(test_case) {
-        return function() {
-            testCaseService.deleteTestCase(vm.contest_nickname, vm.problem_nickname, test_case.id)
-            .then(function(success) {
-                return;
-                vm.contest = contest;
-                vm.problem = vm.contest.problems.filter(function(problem) {
-                    return problem.nickname == vm.problem_nickname;
-                })[0];
-                getValidatedTestCases(vm.problem, vm.problem.solutions);
-                getValidatedTestCases(vm.problem, vm.problem.checkers);
-            });
-        };
-    };
-
     function getValidatedTestCases(problem, items) {
         items.forEach(function(item) {
             if(item.validatedTestCases !== undefined) {
@@ -209,23 +211,14 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
         });
     }
 
-
-    vm.getSignedDownloadUrl = function() {
-        return problemService.downloadProblemFile(vm.contest.nickname, vm.problem.nickname);
-    };
-
-    vm.getSignedUploadUrl = function(file) {
-        return problemService.getUploadProblemFileSignedUrl(vm.contest.nickname, vm.problem.nickname, {
-            name: file.name
-        });
-    };
-
-    vm.uploadProblemFile = function(file) {
-        return problemService.registerFile(vm.contest.nickname, vm.problem.nickname, file.name);
-    };
-
-    vm.removeProblemFile = function() {
-        return problemService.deleteProblemFile(vm.contest.nickname, vm.problem.nickname);
+    vm.downloadFile = function(file) {
+        problemService.downloadProblemFile(vm.contest_nickname, vm.problem_nickname)
+            .then(function(signedUrl) {
+                downloadService.download(signedUrl, false, file.name);
+            })
+            .catch(function(err) {
+                vm.err = 'Não foi possível baixar este arquivo.';
+            });
     };
 
 

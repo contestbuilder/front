@@ -12,6 +12,11 @@ function ViewContestController($routeParams, authService, downloadService, conte
     vm.init = function() {
         vm.me      = routeMe;
         vm.contest = {};
+
+        updateContest();
+    };
+
+    function updateContest() {
         vm.loading = true;
 
         graphqlService.get({
@@ -22,6 +27,7 @@ function ViewContestController($routeParams, authService, downloadService, conte
                 created_at: true,
 
                 author: {
+                    id:       true,
                     name:     true,
                     username: true
                 },
@@ -34,8 +40,13 @@ function ViewContestController($routeParams, authService, downloadService, conte
                 },
 
                 contributors: {
+                    id:       true,
                     name:     true,
                     username: true
+                },
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
                 }
             }
         }, {
@@ -48,24 +59,28 @@ function ViewContestController($routeParams, authService, downloadService, conte
 
             vm.loading = false;
         });
-    };
+    }
 
     vm.canI = function(action, obj) {
         switch(action) {
             case 'delete_contributor':
-                return vm.contest.author._id == vm.me._id;
+                return vm.contest.author.id === vm.me.id;
+            case 'see_problem':
+                return !obj.deleted_at                    // everyone can see not deleted problems.
+                    || vm.contest.author.id === vm.me.id; // author can see deleted problems.
             case 'delete_problem':
-                return vm.contest.author._id == vm.me._id;
+                return vm.contest.author.id === vm.me.id
+                    && !obj.deleted_at;
             default:
                 return false;
         }
     };
 
-    vm.deleteContributor = function(contributor) {
+    vm.deleteContributor = function(contributorToDelete) {
         return function() {
-            contributorService.deleteContributor(vm.contest.nickname, contributor._id)
+            contributorService.deleteContributor(vm.contest.nickname, contributorToDelete.id)
             .then(function(contest) {
-                vm.contest = contest;
+                updateContest();
             });
         };
     };
@@ -74,8 +89,7 @@ function ViewContestController($routeParams, authService, downloadService, conte
         return function() {
             problemService.deleteProblem(vm.contest.nickname, problem.nickname)
             .then(function(contest) {
-                vm.contest = contest;
-                updateListOfProblems(vm.contest.problems);
+                updateContest();
             });
         };
     };
@@ -84,7 +98,7 @@ function ViewContestController($routeParams, authService, downloadService, conte
         return function() {
             contestService.deleteContest(vm.contest.nickname)
             .then(function(contest) {
-                vm.contest = contest;
+                updateContest();
             });
         };
     };
@@ -108,9 +122,15 @@ function ViewContestController($routeParams, authService, downloadService, conte
 
     function updateListOfProblems(problems) {
         vm.problemsList = problems.filter(function(problem) {
-            return !problem.deleted_at || vm.canI('delete_problem');
+            return vm.canI('see_problem', problem);
         }).sort(function(a, b) {
-            return a.order - b.order;
+            if(a.deleted_at) {
+                return 1;
+            } else if(b.deleted_at) {
+                return -1;
+            } else {
+                return a.order - b.order;
+            }
         });
         return vm.problemsList;
     }
@@ -142,8 +162,12 @@ function ViewContestController($routeParams, authService, downloadService, conte
             });
     };
 
-    vm.getProblemLetter = function(order) {
-        return String.fromCharCode(64 + order);
+    vm.getProblemLetter = function(problem) {
+        if(problem.deleted_at) {
+            return 'x';
+        }
+
+        return String.fromCharCode(64 + problem.order);
     };
 
     vm.init();

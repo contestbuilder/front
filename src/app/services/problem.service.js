@@ -67,9 +67,10 @@ function problemService($http, apiUrl) {
         });
     };
 
-    service.registerFile = function(contest_nickname, problem_nickname, file_name) {
+    service.registerFile = function(contest_nickname, problem_nickname, data) {
         return $http.put(
-            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file/' + file_name
+            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/file',
+            data
         )
         .then(function(result) {
             return result.data.problem;
