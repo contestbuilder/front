@@ -53,9 +53,8 @@
 						file="testCaseNumber['inputFile']"
 						custom-attach-text="'Carregar de arquivo'"
 
-						signed-download-callback="vm.getSignedDownloadCallback($index, 'input')"
-						signed-upload-callback="vm.getSignedUploadCallback($index, 'input', file)"
-						after-upload-callback="vm.afterUploadCallback($index, 'input', file)"
+						before-upload-callback="vm.beforeUploadCallback($index, 'input', file)"
+						after-upload-callback="vm.afterUploadCallback($index, 'input', file, filePath)"
 						remove-callback="vm.removeCallback($index, 'input')"
 					></single-attachment>
 				</div>
@@ -82,9 +81,8 @@
 						file="testCaseNumber['outputFile']"
 						custom-attach-text="'Carregar de arquivo'"
 
-						signed-download-callback="vm.getSignedDownloadCallback($index, 'output')"
-						signed-upload-callback="vm.getSignedUploadCallback($index, 'output', file)"
-						after-upload-callback="vm.afterUploadCallback($index, 'output', file)"
+						before-upload-callback="vm.beforeUploadCallback($index, 'output', file)"
+						after-upload-callback="vm.afterUploadCallback($index, 'output', file, filePath)"
 						remove-callback="vm.removeCallback($index, 'output')"
 					></single-attachment>
 				</div>

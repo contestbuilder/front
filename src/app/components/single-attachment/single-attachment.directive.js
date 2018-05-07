@@ -19,6 +19,7 @@ function singleAttachment() {
 
             // callbacks
             signedDownloadCallback: '&',
+            beforeUploadCallback:   '&',
             afterUploadCallback:    '&',
             removeCallback:         '&'
         },
@@ -46,6 +47,8 @@ function singleAttachment() {
             var signedUrlPromise;
             if(vm.recentlyUploaded && vm.recentlyUploadedPath) {
                 signedUrlPromise = fileService.getSignedDownloadUrl(vm.recentlyUploadedPath);
+            } else if(vm.file && vm.file.path) {
+                signedUrlPromise = fileService.getSignedDownloadUrl(vm.file.path);
             } else {
                 signedUrlPromise = vm.signedDownloadCallback();
             }
@@ -96,6 +99,9 @@ function singleAttachment() {
             var fileName = file.name;
 
             vm.loading = true;
+            vm.beforeUploadCallback({
+                file: file
+            });
             fileService.getSignedUploadUrl(file.name)
                 .then(function(signedUrl) {
                     return new Promise(function(resolve, reject) {

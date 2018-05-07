@@ -39,9 +39,8 @@
 						file="vm.form.inputFile"
 						custom-attach-text="'Carregar de arquivo'"
 
-						signed-download-callback="vm.getSignedDownloadCallback('input')"
-						signed-upload-callback="vm.getSignedUploadCallback('input', file)"
-						after-upload-callback="vm.afterUploadCallback('input', file)"
+						before-upload-callback="vm.beforeUploadCallback('input', file)"
+						after-upload-callback="vm.afterUploadCallback('input', file, filePath)"
 						remove-callback="vm.removeCallback('input')"
 					></single-attachment>
 				</div>
@@ -67,9 +66,8 @@
 						file="vm.form.outputFile"
 						custom-attach-text="'Carregar de arquivo'"
 
-						signed-download-callback="vm.getSignedDownloadCallback('output')"
-						signed-upload-callback="vm.getSignedUploadCallback('output', file)"
-						after-upload-callback="vm.afterUploadCallback('output', file)"
+						before-upload-callback="vm.beforeUploadCallback('output', file)"
+						after-upload-callback="vm.afterUploadCallback('output', file, filePath)"
 						remove-callback="vm.removeCallback('output')"
 					></single-attachment>
 				</div>

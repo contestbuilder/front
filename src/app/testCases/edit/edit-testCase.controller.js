@@ -38,17 +38,19 @@ function EditTestCaseController($routeParams, $scope, $location, $filter, graphq
                 id:             true,
                 input:          true,
                 output:         true,
-                order:          true,
                 input_text_id:  true,
                 output_text_id: true,
+                order:          true,
 
                 input_file: {
                     id:   true,
-                    name: true
+                    name: true,
+                    path: true
                 },
                 output_file: {
                     id:   true,
-                    name: true
+                    name: true,
+                    path: true
                 },
 
                 conditions: {
@@ -82,7 +84,8 @@ function EditTestCaseController($routeParams, $scope, $location, $filter, graphq
             vm.form.inputFile = {
                 original: true,
                 id:       vm.testCase.input_file.id,
-                name:     vm.testCase.input_file.name
+                name:     vm.testCase.input_file.name,
+                path:     vm.testCase.input_file.path
             };
         }
         if(vm.testCase.input_text_id) {
@@ -93,7 +96,8 @@ function EditTestCaseController($routeParams, $scope, $location, $filter, graphq
             vm.form.outputFile = {
                 original: true,
                 id:       vm.testCase.output_file.id,
-                name:     vm.testCase.output_file.name
+                name:     vm.testCase.output_file.name,
+                path:     vm.testCase.output_file.path
             };
         }
         if(vm.testCase.output_text_id) {
@@ -106,7 +110,11 @@ function EditTestCaseController($routeParams, $scope, $location, $filter, graphq
 
         params.input = form.input;
         if(form.inputFile) {
-            params.input_file_id = form.inputFile.id;
+            params.input_file = {
+                id:   form.inputFile.id,
+                name: form.inputFile.name,
+                path: form.inputFile.path
+            };
         }
         if(form.inputLarge) {
             params.input_large = true;
@@ -114,7 +122,11 @@ function EditTestCaseController($routeParams, $scope, $location, $filter, graphq
 
         params.output = form.output;
         if(form.outputFile) {
-            params.output_file_id = form.outputFile.id;
+            params.output_file = {
+                id:   form.outputFile.id,
+                name: form.outputFile.name,
+                path: form.outputFile.path
+            };
         }
         if(form.outputLarge) {
             params.output_large = true;
@@ -131,6 +143,28 @@ function EditTestCaseController($routeParams, $scope, $location, $filter, graphq
         });
     };
 
+
+    vm.beforeUploadCallback = function(fileType, file) {
+        vm.loadTestCaseFromFile(fileType, file);
+
+        vm.form[fileType + 'File'] = file;
+        vm.currentUploadingCount++;
+    };
+
+    vm.afterUploadCallback = function(fileType, file, filePath) {
+        vm.form[fileType + 'File'].path = filePath;
+        vm.currentUploadingCount--;
+
+        return Promise.resolve();
+    };
+
+    vm.removeCallback = function(fileType) {
+        vm.form[fileType] = '';
+        delete vm.form[fileType + 'File'];
+        delete vm.form[fileType + 'Large'];
+
+        return Promise.resolve();
+    };
 
     vm.loadTestCaseFromFile = function(fileType, file) {
         if(!file) {
@@ -152,70 +186,6 @@ function EditTestCaseController($routeParams, $scope, $location, $filter, graphq
         fileReader.onerror = function(evt) {
         };
         fileReader.readAsText(file);
-    };
-
-    vm.getSignedDownloadCallback = function(fileType) {
-        return testCaseService.getDownloadFileSignedUrl(
-            vm.contest.nickname, 
-            vm.problem.nickname, 
-            vm.form[fileType + 'File'].id
-        );
-    };
-
-    vm.getSignedUploadCallback = function(fileType, file) {
-        return testCaseService.getUploadFileSignedUrl(
-            vm.contest.nickname, 
-            vm.problem.nickname,
-            {
-                name: file.name
-            }
-        ).then(function(signedUrl) {
-            vm.loadTestCaseFromFile(fileType, file);
-
-            vm.form[fileType + 'File'] = file;
-            vm.form[fileType + 'SignedUrl'] = signedUrl;
-            vm.currentUploadingCount++;
-
-            return signedUrl;
-        });
-    };
-
-    vm.afterUploadCallback = function(fileType, file) {
-        return testCaseService.registerFile(
-            vm.contest.nickname,
-            vm.problem.nickname,
-            file.name
-        ).then(function(fileId) {
-            vm.form[fileType + 'File'].id = fileId;
-
-            vm.currentUploadingCount--;
-
-            return true;
-        });
-    };
-
-    vm.removeCallback = function(fileType) {
-        if(vm.form[fileType + 'File'].original) {
-            delete vm.form[fileType + 'File'];
-            delete vm.form[fileType + 'Large'];
-            vm.form[fileType] = '';
-
-            return Promise.resolve();
-        }
-
-        return testCaseService.deleteFile(
-            vm.contest.nickname, 
-            vm.problem.nickname, 
-            vm.form[fileType + 'File'].id
-        )
-        .then(function(data) {
-            delete vm.form[fileType + 'File'];
-            delete vm.form[fileType + 'SignedUrl'];
-            delete vm.form[fileType + 'Large'];
-            vm.form[fileType] = '';
-
-            return data;
-        });
     };
 
     vm.init();

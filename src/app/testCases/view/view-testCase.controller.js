@@ -63,7 +63,11 @@ function ViewTestCaseController($routeParams, testCaseService, graphqlService) {
         vm[inputType + 'Loading'] = true;
         graphqlService.get({
             text: {
-                text: true
+                text: true,
+
+                conditions: {
+                    text_id: '$text_id'
+                }
             }
         }, {
             text_id: vm.test_case[inputType + '_text_id']
