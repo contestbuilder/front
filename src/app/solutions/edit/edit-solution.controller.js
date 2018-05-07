@@ -6,7 +6,7 @@ angular
     .controller('EditSolutionController', EditSolutionController);
 
 /** @ngInject */
-function EditSolutionController($routeParams, $location, $filter, languages, solutionService, graphqlService) {
+function EditSolutionController($routeParams, $location, $scope, $filter, languages, solutionService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
@@ -39,6 +39,13 @@ function EditSolutionController($routeParams, $location, $filter, languages, sol
                 nickname:    true,
                 source_code: true,
                 language:    true,
+                text_id:     true,
+
+                file: {
+                    id:   true,
+                    name: true,
+                    path: true
+                },
 
                 conditions: {
                     solution_nickname: '$solution_nickname'
@@ -63,16 +70,30 @@ function EditSolutionController($routeParams, $location, $filter, languages, sol
 
     function fillInitialValues() {
         vm.form = {
-            source_code: vm.solution.source_code,
-            language:    vm.solution.language
+            source_code:     vm.solution.source_code,
+            language:        vm.solution.language,
+            file:            vm.solution.file,
+            sourceCodeLarge: !!vm.solution.text_id
         };
     }
 
     vm.submit = function(form) {
-        solutionService.editSolution(vm.contest.nickname, vm.problem.nickname, vm.solution.nickname, {
+        var data = {
             source_code: form.source_code,
             language:    form.language
-        }).then(function(solution) {
+        };
+
+        if(form.file) {
+            data.file = {
+                id:    form.file.id,
+                name:  form.file.name,
+                path:  form.file.path,
+                large: !!form.sourceCodeLarge
+            };
+        }
+
+        solutionService.editSolution(vm.contest.nickname, vm.problem.nickname, vm.solution.nickname, data)
+        .then(function(solution) {
             $location.path($filter('url')(
                 'contest.problem.solution.view',
                 vm.contest.nickname,
@@ -83,17 +104,49 @@ function EditSolutionController($routeParams, $location, $filter, languages, sol
     };
 
 
-    vm.loadCallback = function(err, content) {
-        if(err) {
-            return;
-        }
+    vm.beforeUploadCallback = function(file) {
+        vm.loadFromFile(file);
 
-        vm.form.source_code = content;
+        vm.form.file = file;
+        vm.currentUploadingCount++;
+    };
+
+    vm.afterUploadCallback = function(file, filePath) {
+        vm.form.file.path = filePath;
+        vm.currentUploadingCount--;
+
+        return Promise.resolve();
     };
 
     vm.removeCallback = function() {
-        delete vm.form.file;
         vm.form.source_code = '';
+        delete vm.form.file;
+        delete vm.form.sourceCodeLarge;
+
+        return Promise.resolve();
+    };
+
+
+    vm.loadFromFile = function(file) {
+        if(!file) {
+            return;
+        }
+
+        var fileReader = new FileReader();
+        fileReader.onload = function(evt) {
+            $scope.$apply(function () {
+                if(fileReader.result.length > 4000) {
+                    vm.form.source_code = fileReader.result.substr(0, 3997) + '...';
+                    vm.form.sourceCodeLarge = true;
+                } else {
+                    vm.form.source_code = fileReader.result;
+                    vm.form.sourceCodeLarge = false;
+                }
+            });
+        };
+        fileReader.onerror = function(evt) {
+        };
+        fileReader.readAsText(file);
     };
 
     vm.init();

@@ -30,15 +30,19 @@
 						id="solution-source_code"
 						placeholder="Código fonte" 
 						ng-required="true" 
+						ng-disabled="vm.form.file"
 						rows="10"
+						maxlength="4000"
 					></textarea>
 
-					<file-loader
+					<single-attachment
+						file="vm.form.file"
 						custom-attach-text="'Carregar de arquivo'"
 
-						load-callback="vm.loadCallback(err, content)"
+						before-upload-callback="vm.beforeUploadCallback(file)"
+						after-upload-callback="vm.afterUploadCallback(file, filePath)"
 						remove-callback="vm.removeCallback()"
-					></file-loader>
+					></single-attachment>
 				</div>
 
 				<div class="form-group">

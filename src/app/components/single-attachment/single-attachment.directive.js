@@ -31,7 +31,7 @@ function singleAttachment() {
     return directive;
 
     /** @ngInject */
-    function SingleAttachmentController(fileService, downloadService, Upload) {
+    function SingleAttachmentController($scope, fileService, downloadService, Upload) {
         var vm = this;
 
         vm.init = function() {
@@ -71,9 +71,11 @@ function singleAttachment() {
 
             vm.removeCallback()
                 .then(function(response) {
-                    vm.loading = false;
+                    $scope.$apply(function() {
+                        vm.loading = false;
 
-                    vm.file = undefined;
+                        vm.file = undefined;
+                    });
                 })
                 .catch(function(err) {
                     vm.loading = false;

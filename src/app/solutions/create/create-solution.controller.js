@@ -6,7 +6,7 @@ angular
     .controller('CreateSolutionController', CreateSolutionController);
 
 /** @ngInject */
-function CreateSolutionController($location, $filter, $routeParams, languages, solutionService, graphqlService) {
+function CreateSolutionController($location, $scope, $filter, $routeParams, languages, solutionService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
@@ -48,11 +48,22 @@ function CreateSolutionController($location, $filter, $routeParams, languages, s
     };
 
     vm.submit = function(form) {
-        solutionService.createSolution(vm.contest.nickname, vm.problem.nickname, {
+        var data = {
             name:        form.name,
             source_code: form.source_code,
             language:    form.language
-        }).then(function(solution) {
+        };
+
+        if(form.file) {
+            data.file = {
+                name:  form.file.name,
+                path:  form.file.path,
+                large: !!form.sourceCodeLarge
+            };
+        }
+
+        solutionService.createSolution(vm.contest.nickname, vm.problem.nickname, data)
+        .then(function(solution) {
             $location.path($filter('url')(
                 'contest.problem.solution.view',
                 vm.contest.nickname,
@@ -63,17 +74,49 @@ function CreateSolutionController($location, $filter, $routeParams, languages, s
     };
 
 
-    vm.loadCallback = function(err, content) {
-        if(err) {
-            return;
-        }
+    vm.beforeUploadCallback = function(file) {
+        vm.loadFromFile(file);
 
-        vm.form.source_code = content;
+        vm.form.file = file;
+        vm.currentUploadingCount++;
+    };
+
+    vm.afterUploadCallback = function(file, filePath) {
+        vm.form.file.path = filePath;
+        vm.currentUploadingCount--;
+
+        return Promise.resolve();
     };
 
     vm.removeCallback = function() {
-        delete vm.form.file;
         vm.form.source_code = '';
+        delete vm.form.file;
+        delete vm.form.sourceCodeLarge;
+
+        return Promise.resolve();
+    };
+
+
+    vm.loadFromFile = function(file) {
+        if(!file) {
+            return;
+        }
+
+        var fileReader = new FileReader();
+        fileReader.onload = function(evt) {
+            $scope.$apply(function () {
+                if(fileReader.result.length > 4000) {
+                    vm.form.source_code = fileReader.result.substr(0, 3997) + '...';
+                    vm.form.sourceCodeLarge = true;
+                } else {
+                    vm.form.source_code = fileReader.result;
+                    vm.form.sourceCodeLarge = false;
+                }
+            });
+        };
+        fileReader.onerror = function(evt) {
+        };
+        fileReader.readAsText(file);
     };
 
     vm.init();
