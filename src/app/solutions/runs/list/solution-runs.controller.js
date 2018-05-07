@@ -18,12 +18,20 @@ function ViewSolutionRunsController($routeParams, $filter, utilService, graphqlS
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
             },
 
             problem: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
+                }
             },
 
             solution: {
@@ -33,6 +41,10 @@ function ViewSolutionRunsController($routeParams, $filter, utilService, graphqlS
                 runs: {
                     number:    true,
                     timestamp: true
+                },
+
+                conditions: {
+                    solution_nickname: '$solution_nickname'
                 }
             }
         }, {

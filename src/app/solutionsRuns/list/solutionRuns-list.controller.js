@@ -17,7 +17,11 @@ function ViewProblemSolutionRunsController($routeParams, $filter, utilService, g
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
             },
 
             problem: {
@@ -31,6 +35,10 @@ function ViewProblemSolutionRunsController($routeParams, $filter, utilService, g
                         number:    true,
                         timestamp: true
                     }
+                },
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
                 }
             }
         }, {

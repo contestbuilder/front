@@ -17,7 +17,11 @@ function ViewProblemSolutionRunController($routeParams, $filter, utilService, gr
         graphqlService.get({
             contest: {
                 name:     true,
-                nickname: true
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
             },
 
             problem: {
@@ -45,6 +49,10 @@ function ViewProblemSolutionRunController($routeParams, $filter, utilService, gr
 
                 test_cases: {
                     id: true
+                },
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
                 }
             }
         }, {

@@ -147,11 +147,13 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
                         test_case: {
                             id: true
                         }
+                    },
+
+                    conditions: {
+                        solution_nickname: '$solution_nickname'
                     }
                 }
             }, {
-                contest_nickname:  vm.contest.nickname,
-                problem_nickname:  vm.problem.nickname,
                 solution_nickname: vm.problem.solutions[solution_index].nickname
             }).then(function(data) {
                 return data.solution[0];
