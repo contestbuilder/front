@@ -6,7 +6,7 @@ angular
     .controller('ViewProblemController', ViewProblemController);
 
 /** @ngInject */
-function ViewProblemController($routeParams, downloadService, graphqlService, problemService, solutionService, checkerService, testCaseService, runService) {
+function ViewProblemController($routeParams, fileService, downloadService, graphqlService, solutionService, checkerService, testCaseService, runService) {
     var vm = this;
 
     vm.init = function() {
@@ -39,7 +39,8 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
                 deleted_at:  true,
 
                 file: {
-                    name: true
+                    name: true,
+                    path: true
                 },
 
                 solutions: {
@@ -214,7 +215,7 @@ function ViewProblemController($routeParams, downloadService, graphqlService, pr
     }
 
     vm.downloadFile = function(file) {
-        problemService.downloadProblemFile(vm.contest_nickname, vm.problem_nickname)
+        fileService.getSignedDownloadUrl(file.path)
             .then(function(signedUrl) {
                 downloadService.download(signedUrl, false, file.name);
             })

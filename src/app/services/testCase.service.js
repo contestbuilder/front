@@ -50,44 +50,6 @@ function testCaseService($http, apiUrl) {
         });
     };
 
-
-    service.getDownloadFileSignedUrl = function(contest_nickname, problem_nickname, file_name) {
-        return $http.get(
-            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/test_case/file/' + file_name
-        )
-        .then(function(result) {
-            return result.data.signedUrl;
-        });
-    };
-
-    service.getUploadFileSignedUrl = function(contest_nickname, problem_nickname, data) {
-        return $http.post(
-            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/test_case/file',
-            data
-        )
-        .then(function(result) {
-            return result.data.signedUrl;
-        });
-    };
-
-    service.deleteFile = function(contest_nickname, problem_nickname, file_name) {
-        return $http.delete(
-            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/test_case/file/' + file_name
-        )
-        .then(function(result) {
-            return result.data.success;
-        });
-    };
-
-    service.registerFile = function(contest_nickname, problem_nickname, file_name) {
-        return $http.post(
-            apiUrl + 'contest/' + contest_nickname + '/problem/' + problem_nickname + '/test_case/file/' + file_name
-        )
-        .then(function(result) {
-            return result.data.file_id;
-        });
-    };
-
     return service;
 }
 
