@@ -69,7 +69,12 @@ function ViewProblemController($routeParams, fileService, downloadService, graph
                     deleted_at: true
                 },
 
-                // checkers
+                checkers: {
+                    name:       true,
+                    nickname:   true,
+                    last_edit:  true,
+                    deleted_at: true
+                },
 
                 conditions: {
                     problem_nickname: '$problem_nickname'

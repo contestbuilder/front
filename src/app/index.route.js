@@ -162,35 +162,27 @@ function routeConfig(frontUrls, $routeProvider, $locationProvider, $httpProvider
 
 
     /* checkers */
-    // .when(frontUrls.urls.contest.problem.checker.new, {
-    //     templateUrl : 'app/checkers/create/create-checker.html',
-    //     controller  : 'CreateCheckerController',
-    //     controllerAs: 'vm',
-    //     resolve     : {
-    //         routeContest: getContest,
-    //         routeProblem: getProblem
-    //     }
-    // })
-    // .when(frontUrls.urls.contest.problem.checker.view, {
-    //     templateUrl : 'app/checkers/view/view-checker.html',
-    //     controller  : 'ViewCheckerController',
-    //     controllerAs: 'vm',
-    //     resolve     : {
-    //         routeContest: getContest,
-    //         routeProblem: getProblem,
-    //         routeChecker: getChecker
-    //     }
-    // })
-    // .when(frontUrls.urls.contest.problem.checker.edit, {
-    //     templateUrl : 'app/checkers/edit/edit-checker.html',
-    //     controller  : 'EditCheckerController',
-    //     controllerAs: 'vm',
-    //     resolve     : {
-    //         routeContest: getContest,
-    //         routeProblem: getProblem,
-    //         routeChecker: getChecker
-    //     }
-    // })
+    .when(frontUrls.urls.contest.problem.checker.new, {
+        templateUrl : 'app/checkers/create/create-checker.html',
+        controller  : 'CreateCheckerController',
+        controllerAs: 'vm',
+        resolve     : {
+        }
+    })
+    .when(frontUrls.urls.contest.problem.checker.view, {
+        templateUrl : 'app/checkers/view/view-checker.html',
+        controller  : 'ViewCheckerController',
+        controllerAs: 'vm',
+        resolve     : {
+        }
+    })
+    .when(frontUrls.urls.contest.problem.checker.edit, {
+        templateUrl : 'app/checkers/edit/edit-checker.html',
+        controller  : 'EditCheckerController',
+        controllerAs: 'vm',
+        resolve     : {
+        }
+    })
 
 
     /* test cases */

@@ -6,19 +6,57 @@ angular
     .controller('ViewCheckerController', ViewCheckerController);
 
 /** @ngInject */
-function ViewCheckerController($routeParams, utilService, routeContest, routeProblem, routeChecker) {
+function ViewCheckerController($routeParams, utilService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = routeContest;
-        vm.problem = routeProblem;
-        vm.checker = routeChecker;
-        vm.contest_nickname = $routeParams.contest_nickname;
-        vm.problem_nickname = $routeParams.problem_nickname;
-        vm.checker_nickname = $routeParams.checker_nickname;
+        vm.contest = {};
+        vm.problem = {};
+        vm.checker = {};
+        vm.loading = true;
 
-        vm.checker.current = vm.checker.v[vm.checker.v.length-1];
-        vm.checker.current.language = utilService.getLanguage(vm.checker.current.language);
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
+            },
+
+            problem: {
+                name:     true,
+                nickname: true,
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
+                }
+            },
+
+            checker: {
+                name:        true,
+                nickname:    true,
+                language:    true,
+                source_code: true,
+
+                conditions: {
+                    checker_nickname: '$checker_nickname'
+                }
+            }
+        }, {
+            contest_nickname: $routeParams.contest_nickname,
+            problem_nickname: $routeParams.problem_nickname,
+            checker_nickname: $routeParams.checker_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+            vm.problem = data.problem[0];
+            vm.checker = data.checker[0];
+
+            vm.checker.language = utilService.getLanguage(vm.checker.language);
+
+            vm.loading = false;
+        });
     };
 
     vm.init();

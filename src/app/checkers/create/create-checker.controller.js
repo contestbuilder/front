@@ -6,47 +6,117 @@ angular
     .controller('CreateCheckerController', CreateCheckerController);
 
 /** @ngInject */
-function CreateCheckerController($location, $filter, $routeParams, languages, checkerService, routeContest, routeProblem) {
+function CreateCheckerController($location, $filter, $routeParams, languages, checkerService, graphqlService) {
     var vm = this;
 
     vm.init = function() {
-        vm.contest = routeContest;
-        vm.problem = routeProblem;
-        
-        vm.contest_nickname = $routeParams.contest_nickname;
-        vm.problem_nickname = $routeParams.problem_nickname;
+        vm.contest = {};
+        vm.problem = {};
+        vm.loading = true;
 
+        graphqlService.get({
+            contest: {
+                name:     true,
+                nickname: true,
+
+                conditions: {
+                    contest_nickname: '$contest_nickname'
+                }
+            },
+
+            problem: {
+                name:     true,
+                nickname: true,
+
+                conditions: {
+                    problem_nickname: '$problem_nickname'
+                }
+            }
+        }, {
+            contest_nickname: $routeParams.contest_nickname,
+            problem_nickname: $routeParams.problem_nickname
+        }).then(function(data) {
+            vm.contest = data.contest[0];
+            vm.problem = data.problem[0];
+
+            vm.loading = false;
+        });
+        
         vm.languages = languages;
+
         vm.form = {};
     };
 
     vm.submit = function(form) {
-        checkerService.createChecker(vm.contest_nickname, vm.problem_nickname, {
+        var data = {
             name:        form.name,
             source_code: form.source_code,
             language:    form.language
-        }).then(function(checker) {
+        };
+
+        if(form.file) {
+            data.file = {
+                name:  form.file.name,
+                path:  form.file.path,
+                large: !!form.sourceCodeLarge
+            };
+        }
+
+        checkerService.createChecker(vm.contest.nickname, vm.problem.nickname, data)
+        .then(function(checker) {
             $location.path($filter('url')(
                 'contest.problem.checker.view',
-                vm.contest_nickname,
-                vm.problem_nickname,
+                vm.contest.nickname,
+                vm.problem.nickname,
                 checker.nickname
             ));
         });
     };
 
 
-    vm.loadCallback = function(err, content) {
-        if(err) {
-            return;
-        }
+    vm.beforeUploadCallback = function(file) {
+        vm.loadFromFile(file);
 
-        vm.form.source_code = content;
+        vm.form.file = file;
+        vm.currentUploadingCount++;
+    };
+
+    vm.afterUploadCallback = function(file, filePath) {
+        vm.form.file.path = filePath;
+        vm.currentUploadingCount--;
+
+        return Promise.resolve();
     };
 
     vm.removeCallback = function() {
-        delete vm.form.file;
         vm.form.source_code = '';
+        delete vm.form.file;
+        delete vm.form.sourceCodeLarge;
+
+        return Promise.resolve();
+    };
+
+
+    vm.loadFromFile = function(file) {
+        if(!file) {
+            return;
+        }
+
+        var fileReader = new FileReader();
+        fileReader.onload = function(evt) {
+            $scope.$apply(function () {
+                if(fileReader.result.length > 4000) {
+                    vm.form.source_code = fileReader.result.substr(0, 3997) + '...';
+                    vm.form.sourceCodeLarge = true;
+                } else {
+                    vm.form.source_code = fileReader.result;
+                    vm.form.sourceCodeLarge = false;
+                }
+            });
+        };
+        fileReader.onerror = function(evt) {
+        };
+        fileReader.readAsText(file);
     };
 
     vm.init();
